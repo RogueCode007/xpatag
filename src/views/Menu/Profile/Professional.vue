@@ -1,5 +1,6 @@
 <template>
   <div>
+      <input type="checkbox" v-model="state" value="1">
       <Complete v-if="complete" />
       <Incomplete v-else />
   </div>
@@ -14,7 +15,17 @@ export default {
     },
     data(){
         return{
-            complete: true
+            complete: true,
+            state: []
+        }
+    },
+    watch:{
+        state(){
+            if(this.state.length > 0){
+                this.complete = true
+            }else{
+                this.complete = false
+            }
         }
     }
 }

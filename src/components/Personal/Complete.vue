@@ -1,7 +1,10 @@
 <template>
   <div class="py-8 lg:py-16 px-3 lg:flex lg:gap-20">
     <div class="imgcont relative">
-        <img :src="user.image" alt="" class="w-full" style="border-radius: 50%; height: 100%">
+       <object :data="user.image" type="image/png">
+        <img :src="placeholder" alt="Placeholder image">
+       </object>
+        <!-- <img :src="user.image" alt="" class="w-full" style="border-radius: 50%; height: 100%"> -->
     </div>  
     <div class="mt-6 infobox">
        <div class="py-4 border-b border-solid lg:flex justify-between">
@@ -65,6 +68,11 @@ export default {
   height: 100px;
   border-radius: 50%;
   /* border: 1px solid red */
+}
+.imgcont img{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%
 }
 .green-circle{
   background-color: #52B95E;
