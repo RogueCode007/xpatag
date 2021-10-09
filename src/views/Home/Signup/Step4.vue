@@ -98,7 +98,7 @@ export default {
 .link{
   top: 50%;
   transform: translateY(-50%);
-}
+}∏
 .flex-cont{
   display: flex;
   flex-wrap: wrap;

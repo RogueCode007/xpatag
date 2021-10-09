@@ -1,6 +1,6 @@
 <template>
-  <div class="mt-4">
-    <h1 class="font-bold text-2xl text-center">Create an account</h1>
+  <div class="mt-6">
+    <h1 class="fonts-bold text-2xl text-center">Create an account</h1>
     <form @submit.prevent="validate" class="mt-4">
       <div class="form__div mt-2">
         <input v-model="firstname" type="text" class="form__input" placeholder=" " required>
