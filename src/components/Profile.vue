@@ -5,7 +5,7 @@
             <img :src="placeholder" alt="" class="w-full" style="border-radius: 50%; height: 100%">
           </div>
           <div class="ml-3">
-            <p class="text-sm font-semibold">JEREMIAH BABATUNDE</p>
+            <p class="text-sm font-semibold">{{name}}</p>
             <div class="flex mt-2">
                 <svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0)">
@@ -37,6 +37,11 @@ export default {
             placeholder: placeholder,
         }
     
+    },
+    computed:{
+      name(){
+        return this.$store.state.user.firstname.toUpperCase() + " " + this.$store.state.user.lastname.toUpperCase()
+      }
     }
 }
 </script>

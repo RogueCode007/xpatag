@@ -50,10 +50,10 @@
             Verified
         </div>
       </div>
-      <div class="mt-4 relative" style="min-height: 200px">
+      <!-- <div class="mt-4 relative" style="min-height: 200px">
         <textarea class="form__input" placeholder="Share your professional experience, successful projects completed in the past and your years of expertise. Leave a convincing bio that will attract clients. "  cols="30" rows="10"></textarea>
-        <!-- <label class="text-gray-500 text-xs form__label" >Service Description</label> -->
-      </div>
+        <label class="text-gray-500 text-xs form__label" >Service Description</label>
+      </div> -->
       <button class="text-white p-3 w-full mt-6 mb-4" style="background: #52B95E;border-radius: 22px;">Continue</button>
     </form>
   </div>

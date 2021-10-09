@@ -1,26 +1,20 @@
 <template>
   <div class="py-8 lg:py-16 px-3 lg:flex lg:gap-20">
     <div class="imgcont relative">
-        <img :src="placeholder" alt="" class="w-full" style="border-radius: 50%; height: 100%">
-        <label for="actual-btn" class="green-circle absolute">
-            <svg class="editsvg" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10.625 1.87494C10.7892 1.71079 10.984 1.58058 11.1985 1.49174C11.413 1.4029 11.6429 1.35718 11.875 1.35718C12.1071 1.35718 12.337 1.4029 12.5515 1.49174C12.766 1.58058 12.9608 1.71079 13.125 1.87494C13.2892 2.0391 13.4194 2.23397 13.5082 2.44845C13.597 2.66292 13.6428 2.8928 13.6428 3.12494C13.6428 3.35709 13.597 3.58696 13.5082 3.80144C13.4194 4.01592 13.2892 4.21079 13.125 4.37494L4.6875 12.8124L1.25 13.7499L2.1875 10.3124L10.625 1.87494Z" stroke="#FFF5F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </label>
-        <input id="actual-btn" type="file" ref="image" class="hidden" v-on:change="imageUpload">
+        <img :src="user.image" alt="" class="w-full" style="border-radius: 50%; height: 100%">
     </div>  
     <div class="mt-6 infobox">
        <div class="py-4 border-b border-solid lg:flex justify-between">
            <h3 class="text-xl text-black">Full Name</h3>
-           <p class="mt-4 lg:mt-0 text-xl font-light text-gray-500">Obiwan Pelosi</p>
+           <p class="mt-4 lg:mt-0 text-xl font-light text-gray-500">{{user.firstname}} {{user.lastname}}</p>
        </div> 
        <div class="py-4 border-b border-solid lg:flex justify-between">
            <h3 class="text-xl  text-black">Email</h3>
-           <p class="mt-4 lg:mt-0 text-xl font-light text-gray-500">idfjjo@gmail.com</p>
+           <p class="mt-4 lg:mt-0 text-xl font-light text-gray-500">{{user.email}}</p>
        </div> 
        <div class="py-4 border-b border-solid lg:flex justify-between">
            <h3 class="text-xl  text-black">Phone number</h3>
-           <p class="mt-4 lg:mt-0 text-xl font-light text-gray-500">+234 809 909340</p>
+           <p class="mt-4 lg:mt-0 text-xl font-light text-gray-500">{{user.phone}}</p>
        </div>  
        <div class="py-4 border-b border-solid lg:flex justify-between">
            <h3 class="text-xl text-black">State/City</h3>
@@ -53,6 +47,14 @@ export default {
         return {
             placeholder: placeholder,
         }
+    },
+    computed:{
+        user(){
+            return this.$store.state.user
+        }
+    },
+    mounted(){
+        console.log(this.user)
     }
 }
 </script>

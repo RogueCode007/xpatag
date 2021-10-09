@@ -4,7 +4,7 @@
       <h1 class="text-black font-bold text-2xl">Professional Information</h1>
       <p class="text-gray-500 mt-4">Now is your chance to shine. Make it clear to potential purchasers what you excel at and how you acquired your talents, certificates, and expertise.</p>
     </div>
-    <form @submit.prevent="submit" class="mt-8 lg:w-full">
+    <form action="#" @submit.prevent="" class="mt-8 lg:w-full">
         <div class="lg:flex lg:gap-4 lg:justify-between">
             <div class="form__div lg:w-full">
                 <select class="focus:outline-none w-full" style="color: #80868B">
@@ -129,7 +129,7 @@
         </div>
         <div>
             <p class="text-gray-500 text-lg mt-4">PORTFOLIO</p>
-            <div class="mt-4 relative pt-4" v-for="(item, index) in portfolios" :key="index">
+            <div class="mt-4 mb-12 relative pt-4" v-for="(item, index) in portfolios" :key="index">
                 <font-awesome-icon icon="trash" class="text-red-500 absolute cursor-pointer" v-if="index > 0" @click="removePortfolio(index)" style="right: 0; top: 0"/>
                 <div class="lg:flex lg:gap-4 lg:justify-between mt-4">
                     <div class="form__div lg:w-full">
@@ -150,7 +150,7 @@
                 Add
             </button>
         </div>
-        <button class="text-white p-3 w-full mt-6 mb-4 submit" style="background: #52B95E;border-radius: 22px;">Continue</button>
+        <button @click="submit" class="text-white p-3 w-full mt-6 mb-4 submit" style="background: #52B95E;border-radius: 22px;">Continue</button>
     </form>
     <Updated v-if="completed" v-on:close="completed = false" />
   </div>
@@ -240,7 +240,7 @@ export default {
             })
         },
         removePortfolio(index){
-            this.awards.splice(index, 1)
+            this.portfolios.splice(index, 1)
         },
     }
 }

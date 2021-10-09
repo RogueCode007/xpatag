@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-import router from "vue-router"
+import router from "../router/index"
 import createPersistedState from "vuex-persistedstate";
 import baseURL from "@/main"
 Vue.use(Vuex)
@@ -49,6 +49,7 @@ export default new Vuex.Store({
     },
     unsetNewUser(state){
       state.newUser = {}
+      state.signupStep = 0
     },
     setSuccess(state, payload){
       state.showSuccess = payload.status
@@ -113,6 +114,10 @@ export default new Vuex.Store({
         commit('endLoading')
         dispatch('logoutUser')
         router.push('/login')
+      }else if(err.response.data.message == "Email exists already"){
+        commit('endLoading')
+        commit('setError', {status: true, msg: err.response.data.message})
+        router.push('/signup/1')
       }else if(err.response.data.message){
         commit('endLoading')
         commit('setError', {status: true, msg: err.response.data.message})

@@ -28,7 +28,7 @@
             </svg>
           </div>
           <div class="ml-3">
-            <p class="text-sm">JEREMIAH BABATUNDE</p>
+            <p class="text-sm">{{name}}</p>
             <p class="text-xs text-gray-500">Verified</p>
           </div>
         </div>
@@ -47,6 +47,11 @@ export default {
       searchkeyword: '',
     }
   },
+  computed:{
+    name(){
+      return this.$store.state.user.firstname.toUpperCase() + " " + this.$store.state.user.lastname.toUpperCase()
+    }
+  }
 }
 </script>
 

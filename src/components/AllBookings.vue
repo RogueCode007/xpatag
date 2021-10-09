@@ -16,9 +16,18 @@
       </div>
     <table class="w-full mt-8 lg:mt-6">
         <tbody v-if="bookings.length > 0">
-        <tr v-for="booking in bookings" :key="booking.id" class="">
-            <td class="">
-            <div class="flex items-center">
+          <th>S/N</th>
+          <th>Customer</th>
+          <th>Service Type</th>
+          <th>Amount</th>
+          <th>Timeline</th>
+          <th>Status</th>
+          <th>Action</th>
+        <tr v-for="(booking, index) in bookings" :key="index" class="">
+          <td>{{index + 1}}</td>
+            <td class="text-sm font-bold">
+              {{booking.name}}
+            <!-- <div class="flex items-center">
                 <div class="mr-3 imgcont">
                 <img :src="placeholder" alt="" class="w-full" style="border-radius: 50%; height: 100%">
                 </div>
@@ -26,22 +35,18 @@
                 <p class="text-sm font-bold">{{booking.name}}</p>
                 <p class="text-sm">{{booking.time}}</p>
                 </div>
-            </div>
+            </div> -->
             </td>
-            <td>
-            <div class="flex flex-col justify-between">
+            <td class="text-sm underline font-bold">
+              {{booking.service}}
+            <!-- <div class="flex flex-col justify-between">
                 <p class="text-sm underline font-bold">{{booking.service}}</p>
                 <p class="text-sm">{{booking.date}}</p>
-            </div>
+            </div> -->
             </td>
             <td>{{booking.amount}}</td>
             <td>
-            <div class="flex items-center">
-                <svg class="mr-3" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M14.8624 1.1447C14.5758 0.852624 14.2125 0.647615 13.8143 0.553383C13.4161 0.45915 12.9994 0.479543 12.6124 0.612202L1.99985 4.1597C1.57184 4.2998 1.19787 4.56931 0.929569 4.93103C0.661267 5.29274 0.511866 5.72883 0.501988 6.17908C0.492111 6.62933 0.622244 7.07155 0.874425 7.44468C1.1266 7.81781 1.4884 8.10347 1.90985 8.2622L5.83985 9.7622C5.92934 9.79642 6.01082 9.84871 6.07921 9.91581C6.1476 9.98291 6.20143 10.0634 6.23735 10.1522L7.73735 14.0897C7.89004 14.5052 8.16712 14.8635 8.53083 15.1158C8.89454 15.3681 9.3272 15.5022 9.76985 15.4997H9.82235C10.2731 15.4915 10.71 15.3425 11.0718 15.0735C11.4336 14.8045 11.7022 14.429 11.8399 13.9997L15.3874 3.3722C15.5164 2.98891 15.5356 2.57716 15.4428 2.18352C15.35 1.78987 15.149 1.43004 14.8624 1.1447ZM13.9999 2.8997L10.4149 13.5347C10.3732 13.6693 10.2896 13.7871 10.1763 13.8707C10.0629 13.9544 9.92575 13.9996 9.78485 13.9997C9.64479 14.002 9.50735 13.9616 9.3908 13.8839C9.27425 13.8062 9.1841 13.6949 9.13235 13.5647L7.63235 9.6272C7.52361 9.3411 7.3559 9.08106 7.14011 8.86399C6.92433 8.64691 6.66531 8.47765 6.37985 8.3672L2.44235 6.8672C2.30952 6.81853 2.19534 6.72935 2.11594 6.61227C2.03654 6.49519 1.99593 6.35611 1.99985 6.2147C1.99997 6.07381 2.04517 5.93665 2.12883 5.8233C2.2125 5.70994 2.33025 5.62633 2.46485 5.5847L13.0999 2.0372C13.222 1.98744 13.3559 1.97411 13.4854 1.99882C13.6149 2.02354 13.7345 2.08524 13.8297 2.17647C13.9249 2.2677 13.9916 2.38455 14.0218 2.5129C14.052 2.64125 14.0444 2.77559 13.9999 2.8997Z" fill="#454545"/>
-                </svg>
-                <p>{{booking.location}}</p>
-            </div>
+              <button @click="showTimeline(booking)" style="min-width:80px" class="text-sm text-green-500 rounded-3xl px-2 py-2 border border-solid border-green-500 bg-white">View</button>
             </td>
             <td v-if="booking.status == 'pending'">
             <div class="rounded px-2 py-1 text-sm" style="background-color: rgba(241, 186, 79, 0.1); color: #F1BA4F">
@@ -59,7 +64,7 @@
             </div>
             </td>
             <td>
-            <button style="min-width:80px" class="text-sm text-green-500 rounded-3xl px-2 py-2 border border-solid border-green-500 bg-white">View</button>
+            <button @click="showBooking(booking)" style="min-width:80px" class="text-sm text-green-500 rounded-3xl px-2 py-2 border border-solid border-green-500 bg-white">View</button>
             </td>
         </tr>
         </tbody>
@@ -85,30 +90,50 @@
         </div>
         </tbody>
     </table>
+    <Single v-if="view" :booking="booking" v-on:close="view = false" />
+    <Timeline v-if="timeline" :booking="booking" v-on:close="timeline = false" />
 </div>
 </template>
 
 <script>
 import placeholder from "@/assets/img/Signup/person.png"
+import Single from "@/components/SingleBooking"
+import Timeline from "@/components/BookingTimeline"
 export default {
+  components:{
+    Single, Timeline
+  },
   data(){
     return {
       placeholder: placeholder,
+      booking: {},
+      view: false,
+      timeline: false,
       bookings: [
-        {id: 1, name: "Obiwan, Pelosi", time: '2hrs ago', service: 'Maize Disease Services', date: '2nd, February, 1998', amount: '#50,000', location: 'Abule Ijesha, Lagos', status: 'pending'},
-        {id: 2, name: "Obiwan, Pelosi", time: '2hrs ago', service: 'Maize Disease Services', date: '2nd, February, 1998', amount: '#50,000', location: 'Abule Ijesha, Lagos', status: 'pending'},
-        {id: 3, name: "Obiwan, Pelosi", time: '2hrs ago', service: 'Maize Disease Services', date: '2nd, February, 1998', amount: '#50,000', location: 'Abule Ijesha, Lagos', status: 'pending'},
-        {id: 4, name: "Obiwan, Pelosi", time: '2hrs ago', service: 'Maize Disease Services', date: '2nd, February, 1998', amount: '#50,000', location: 'Abule Ijesha, Lagos', status: 'completed'},
-        {id: 5, name: "Obiwan, Pelosi", time: '2hrs ago', service: 'Maize Disease Services', date: '2nd, February, 1998', amount: '#50,000', location: 'Abule Ijesha, Lagos', status: 'pending'},
-        {id: 6, name: "Obiwan, Pelosi", time: '2hrs ago', service: 'Maize Disease Services', date: '2nd, February, 1998', amount: '#50,000', location: 'Abule Ijesha, Lagos', status: 'completed'},
-        {id: 7, name: "Obiwan, Pelosi", time: '2hrs ago', service: 'Maize Disease Services', date: '2nd, February, 1998', amount: '#50,000', location: 'Abule Ijesha, Lagos', status: 'pending'},
-        {id: 8, name: "Obiwan, Pelosi", time: '2hrs ago', service: 'Maize Disease Services', date: '2nd, February, 1998', amount: '#50,000', location: 'Abule Ijesha, Lagos', status: 'declined'},
-        {id: 9, name: "Obiwan, Pelosi", time: '2hrs ago', service: 'Maize Disease Services', date: '2nd, February, 1998', amount: '#50,000', location: 'Abule Ijesha, Lagos', status: 'declined'},
-        {id: 10, name: "Obiwan, Pelosi", time: '2hrs ago', service: 'Maize Disease Services', date: '2nd, February, 1998', amount: '#50,000', location: 'Abule Ijesha, Lagos', status: 'pending'},
+        {id: 1, name: "Obiwan, Pelosi", time: '2hrs ago', service: 'Maize Disease Services', date: '2nd, February, 1998', amount: '#50,000', location: 'Abule Ijesha, Lagos', status: 'pending', timeline:[{date: 'Feb 4', event: 'Engagement Initiated'}, {date: 'Feb 5', event: 'Contract Agreed'}, {date: 'Feb 6', event: 'Site Inspection'} ]},
+        {id: 2, name: "Obiwan, Pelosi", time: '2hrs ago', service: 'Maize Disease Services', date: '2nd, February, 1998', amount: '#50,000', location: 'Abule Ijesha, Lagos', status: 'pending', timeline:[{date: 'Feb 4', event: 'Engagement Initiated'}, {date: 'Feb 5', event: 'Contract Agreed'}, {date: 'Feb 6', event: 'Site Inspection'} ]},
+        {id: 3, name: "Obiwan, Pelosi", time: '2hrs ago', service: 'Maize Disease Services', date: '2nd, February, 1998', amount: '#50,000', location: 'Abule Ijesha, Lagos', status: 'pending', timeline:[{date: 'Feb 4', event: 'Engagement Initiated'}, {date: 'Feb 5', event: 'Contract Agreed'}, {date: 'Feb 6', event: 'Site Inspection'} ]},
+        {id: 4, name: "Obiwan, Pelosi", time: '2hrs ago', service: 'Maize Disease Services', date: '2nd, February, 1998', amount: '#50,000', location: 'Abule Ijesha, Lagos', status: 'completed', timeline:[{date: 'Feb 4', event: 'Engagement Initiated'}, {date: 'Feb 5', event: 'Contract Agreed'}, {date: 'Feb 6', event: 'Site Inspection'} ]},
+        {id: 5, name: "Obiwan, Pelosi", time: '2hrs ago', service: 'Maize Disease Services', date: '2nd, February, 1998', amount: '#50,000', location: 'Abule Ijesha, Lagos', status: 'pending', timeline:[{date: 'Feb 4', event: 'Engagement Initiated'}, {date: 'Feb 5', event: 'Contract Agreed'}, {date: 'Feb 6', event: 'Site Inspection'} ]},
+        {id: 6, name: "Obiwan, Pelosi", time: '2hrs ago', service: 'Maize Disease Services', date: '2nd, February, 1998', amount: '#50,000', location: 'Abule Ijesha, Lagos', status: 'completed', timeline:[{date: 'Feb 4', event: 'Engagement Initiated'}, {date: 'Feb 5', event: 'Contract Agreed'}, {date: 'Feb 6', event: 'Site Inspection'} ]},
+        {id: 7, name: "Obiwan, Pelosi", time: '2hrs ago', service: 'Maize Disease Services', date: '2nd, February, 1998', amount: '#50,000', location: 'Abule Ijesha, Lagos', status: 'pending', timeline:[{date: 'Feb 4', event: 'Engagement Initiated'}, {date: 'Feb 5', event: 'Contract Agreed'}, {date: 'Feb 6', event: 'Site Inspection'} ]},
+        {id: 8, name: "Obiwan, Pelosi", time: '2hrs ago', service: 'Maize Disease Services', date: '2nd, February, 1998', amount: '#50,000', location: 'Abule Ijesha, Lagos', status: 'declined', timeline:[{date: 'Feb 4', event: 'Engagement Initiated'}, {date: 'Feb 5', event: 'Contract Agreed'}, {date: 'Feb 6', event: 'Site Inspection'} ]},
+        {id: 9, name: "Obiwan, Pelosi", time: '2hrs ago', service: 'Maize Disease Services', date: '2nd, February, 1998', amount: '#50,000', location: 'Abule Ijesha, Lagos', status: 'declined', timeline:[{date: 'Feb 4', event: 'Engagement Initiated'}, {date: 'Feb 5', event: 'Contract Agreed'}, {date: 'Feb 6', event: 'Site Inspection'} ]},
+        {id: 10, name: "Obiwan, Pelosi", time: '2hrs ago', service: 'Maize Disease Services', date: '2nd, February, 1998', amount: '#50,000', location: 'Abule Ijesha, Lagos', status: 'pending', timeline:[{date: 'Feb 4', event: 'Engagement Initiated'}, {date: 'Feb 5', event: 'Contract Agreed'}, {date: 'Feb 6', event: 'Site Inspection'} ]},
       ],
     //   bookings: []
     }
   },
+  methods: {
+    showBooking(val){
+      this.booking = val
+      this.view = true
+    },
+    showTimeline(val){
+      this.booking = val
+      this.timeline = true
+    },
+  }
 }
 
 </script>
@@ -117,24 +142,26 @@ export default {
 th, td {
   text-align: left;
   padding: 8px;
+}
+th:nth-child(1){
+  min-width: 100px
+}
+th:nth-child(2){
+  min-width: 180px
+}
+th:nth-child(3){
   min-width: 150px
 }
-td:nth-child(1){
-  min-width: 180px
+th:nth-child(4){
+  min-width: 120px
 }
-td:nth-child(2){
-  min-width: 180px
-}
-td:nth-child(3){
+th:nth-child(5){
   min-width: 100px
 }
-td:nth-child(4){
-  min-width: 200px
-}
-td:nth-child(5){
+th:nth-child(6){
   min-width: 100px
 }
-td:nth-child(6){
+th:nth-child(7){
   min-width: 100px
 }
 .tablecont::-webkit-scrollbar-track{
@@ -176,23 +203,26 @@ td:nth-child(6){
 }
 
 @media only screen and (min-width: 1024px) {
-  td:nth-child(1){
+  th:nth-child(1){
+    width: 5%
+  }
+  th:nth-child(2){
     width: 20%
   }
-  td:nth-child(2){
-    width: 20%
+  th:nth-child(3){
+    width: 15%
   }
-  td:nth-child(3){
-    width: 10%
+  th:nth-child(4){
+    width: 15%
   }
-  td:nth-child(4){
-    width: 30%
+  th:nth-child(5){
+    width: 15%
   }
-  td:nth-child(5){
-    width: 10%
+  th:nth-child(6){
+    width: 15%
   }
-  td:nth-child(6){
-    width: 10%
+  th:nth-child(7){
+    width: 15%
   }
     .tablecont{
         min-height: 250px

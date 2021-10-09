@@ -57,7 +57,7 @@
         </svg>
         <b class="text-sm">Take Xpatag Professional Test now</b>
       </a> -->
-      <button class="mt-10 outline-none py-2 w-full lg:w-4/5 lg:block lg:mx-auto text-white focus:outline-none" style="background-color: #52B95E; border-radius: 22px">Save Details</button>
+      <button class="mt-10 outline-none py-2 w-full lg:w-4/5 lg:block lg:mx-auto text-white focus:outline-none" style="background-color: #52B95E; border-radius: 22px">Continue</button>
     </form>
   </div>
 </template>

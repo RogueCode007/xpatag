@@ -12,7 +12,7 @@
     <p class="mt-4 text-center">Please provide the following information to create an account.</p>
     
     <form @submit.prevent="submit" class="mt-6">
-      <div class="flex-cont">
+      <div class="flex-cont ">
         <label class="container">One
           <input type="checkbox" v-model="working_days" value="sunday">
           <span class="checkmark">Sunday</span>
@@ -74,22 +74,31 @@ export default {
   },
   methods:{
     submit(){
+      this.$store.commit('startLoading')
       this.user.working_days = this.working_days
       console.log(this.user)
       axios({url: `${baseURL}/signup/expert`, data: this.user, method: 'POST'})
       .then(res=>{
         console.log(res)
         this.$store.commit('increaseSignup', {val: 80})
+        this.$store.commit('endLoading')
         this.$router.push('/signup/verifyotp')
       })
       .catch(err=>{
+        this.$store.commit('endLoading')
         this.$store.dispatch('handleError', err)
       })
       // 
     }
   },
   mounted(){
-    this.working_days = this.user.working_days
+    this.$store.commit('endLoading')
+    if(this.user.working_days){
+      this.working_days = this.user.working_days
+    }else{
+      this.working_days = []
+    }
+    
   }
 }
 </script>
@@ -115,7 +124,7 @@ export default {
   margin-bottom: 12px;
   cursor: pointer;
   font-size: 22px;
-  width: 115px;
+  min-width: 117px;
   height: 115px;
   border-radius: 5.48787px;
   -webkit-user-select: none;
@@ -165,6 +174,9 @@ export default {
     max-width: 700px;
     margin-left: auto;
     margin-right: auto;
+    justify-content: space-between;
+    display: flex;
+    flex-wrap: wrap;
   }
   .container{
     flex: 0 0 23%
