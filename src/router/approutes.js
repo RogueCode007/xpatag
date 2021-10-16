@@ -120,18 +120,18 @@ export default [
                     path: '/app/dashboard/settings/security',
                     component : () => import('../views/Menu/Settings/Security')
                   },
-                  {
-                    path: '/app/dashboard/settings/notifications',
-                    component : ()=> import('../views/Menu/Settings/Notifications')
-                  },
-                  {
-                    path: '/app/dashboard/settings/password',
-                    component : ()=> import('../views/Menu/Settings/Password')
-                  },
-                  {
-                    path: '/app/dashboard/settings/help',
-                    component : ()=> import('../views/Menu/Settings/Help')
-                  },
+                  // {
+                  //   path: '/app/dashboard/settings/notifications',
+                  //   component : ()=> import('../views/Menu/Settings/Notifications')
+                  // },
+                  // {
+                  //   path: '/app/dashboard/settings/password',
+                  //   component : ()=> import('../views/Menu/Settings/Password')
+                  // },
+                  // {
+                  //   path: '/app/dashboard/settings/help',
+                  //   component : ()=> import('../views/Menu/Settings/Help')
+                  // },
                   
                 ]
               },

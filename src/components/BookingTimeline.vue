@@ -91,7 +91,7 @@ ul{
 }
 li{
   padding-bottom: 1.5rem;
-  border-left: 1px solid #abaaed;
+  border-left: 1px solid #52B95E;
   position: relative;
   padding-left: 20px;
   margin-left: 10px;
@@ -104,9 +104,9 @@ li{
     width: 15px;
     height: 15px;
     background: white;
-    border: 1px solid #4e5ed3;
-    box-shadow: 3px 3px 0px #bab5f8;
-    box-shadow: 3px 3px 0px #bab5f8;
+    border: 1px solid rgb(16, 185, 129);
+    box-shadow: 3px 3px 0px rgba(16, 185, 129, 0.3);
+    // box-shadow: 3px 3px 0px #bab5f8;
     border-radius: 50%;
     position: absolute;
     left: -10px;
