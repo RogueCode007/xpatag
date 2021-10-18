@@ -11,11 +11,18 @@
                     <p>BRONZE</p>    
                 </div>
                 <div>
-                    <textarea class="w-full p-3 focus:outline-none" placeholder="Describe the details for package"></textarea>
+                    <textarea v-model="bronze_description" class="w-full p-3 focus:outline-none" placeholder="Describe the details for package, seperate each package feature by a comma" required></textarea>
                 </div>
                 <div class="p-3 border-t border-solid">
-                    <label class="text-sm text-gray-500">PRICE RANGE</label>
-                    <input type="text" class="focus:outline-none outline-none w-full py-2">
+                    <p class="text-sm text-gray-500">PRICE RANGE</p>
+                    <div class="mt-4">
+                        <label class="text-xs">Lower Range</label>   
+                        <money v-model="bronze_lower_bound" v-bind="money" class="focus:outline-none border outline-none w-full p-2" required></money>
+                    </div>
+                    <div class="mt-4">
+                        <label class="text-xs">Upper Range</label>   
+                        <money v-model="bronze_upper_bound" v-bind="money" class="focus:outline-none border outline-none w-full p-2" required></money>
+                    </div>
                 </div>
             </div>
             <div class="border border-solid mt-4 lg:mt-0">
@@ -23,11 +30,18 @@
                     <p>SILVER</p>    
                 </div>
                 <div>
-                    <textarea class="w-full p-3 focus:outline-none" placeholder="Describe the details for package"></textarea>
+                    <textarea v-model="silver_description" required class="w-full p-3 focus:outline-none" placeholder="Describe the details for package, seperate each package feature by a comma"></textarea>
                 </div>
                 <div class="p-3 border-t border-solid">
                     <label class="text-sm text-gray-500">PRICE RANGE</label>
-                    <input type="text" class="focus:outline-none outline-none w-full py-2">
+                    <div class="mt-4">
+                        <label class="text-xs">Lower Range</label>   
+                        <money v-model="silver_lower_bound" v-bind="money" class="focus:outline-none border outline-none w-full p-2" required></money>
+                    </div>
+                    <div class="mt-4">
+                        <label class="text-xs">Upper Range</label>   
+                        <money v-model="silver_upper_bound" v-bind="money" class="focus:outline-none border outline-none w-full p-2" required></money>
+                    </div>
                 </div>
             </div>
             <div class="border border-solid mt-4 lg:mt-0">
@@ -35,15 +49,25 @@
                     <p>GOLD</p>    
                 </div>
                 <div>
-                    <textarea class="w-full p-3 focus:outline-none" placeholder="Describe the details for package"></textarea>
+                    <textarea v-model="gold_description" required class="w-full p-3 focus:outline-none" placeholder="Describe the details for package, seperate each package feature by a comma"></textarea>
                 </div>
                 <div class="p-3 border-t border-solid">
                     <label class="text-sm text-gray-500">PRICE RANGE</label>
-                    <input type="text" class="focus:outline-none outline-none w-full py-2">
+                    <div class="mt-4">
+                        <label class="text-xs">Lower Range</label>   
+                        <money v-model="gold_lower_bound" v-bind="money" class="focus:outline-none border outline-none w-full p-2" required></money>
+                    </div>
+                    <div class="mt-4">
+                        <label class="text-xs">Upper Range</label>   
+                        <money v-model="gold_upper_bound" v-bind="money" class="focus:outline-none border outline-none w-full p-2" required></money>
+                    </div>
                 </div>
             </div>
         </div>
-        <button class="text-white p-3 w-full mt-6 mb-4" style="background: #52B95E;border-radius: 22px;">Save & Publish</button>
+        <div class="relative">
+            <button class="text-white p-3 w-full mt-6 mb-4" style="background: #52B95E;border-radius: 22px;">Save & Publish</button>
+        </div>
+        
     </form> 
     <Modal v-if="showModal" v-on:close="close"/>
   </div>
@@ -51,14 +75,39 @@
 
 <script>
 import Modal from "@/components/ServiceAdded.vue"
+import axios from "axios"
+import baseURL from "@/main"
+import {mapState} from 'vuex'
+import {Money} from "v-money"
 export default {
     components:{
-        Modal
+        Modal, Money
     },
     data(){
         return {
-        showModal : false
+            showModal : false,
+            bronze_description: '',
+            silver_description: '',
+            gold_description: '',
+            bronze_lower_bound: '',
+            bronze_upper_bound: '',
+            silver_lower_bound: '',
+            silver_upper_bound: '',
+            gold_lower_bound: '',
+            gold_upper_bound: '',
+            money: {
+                thousands: ',',
+                prefix: '₦ ',
+                precision: 0,
+                masked: false
+            }
+            
         }
+    },
+    computed:{
+        ...mapState({
+            newService : state => state.newService
+        })
     },
     methods:{
         close(){
@@ -67,9 +116,37 @@ export default {
             this.$router.push('/app/dashboard/services')
         },
         submit(){
-            this.$store.commit('setActiveModal', true)
-            this.showModal = true
+            this.$store.commit('startLoading')
+            const obj = {
+                bronze_description : this.bronze_description,
+                silver_description : this.silver_description,
+                gold_description : this.gold_description,
+                bronze_lower_bound: this.bronze_lower_bound,
+                bronze_upper_bound: this.bronze_upper_bound,
+                silver_lower_bound : this.silver_lower_bound,
+                silver_upper_bound: this.silver_upper_bound,
+                gold_lower_bound : this.gold_lower_bound,
+                gold_upper_bound : this.gold_upper_bound,
+                name: this.newService.name,
+                image: this.newService.image,
+                service_description : this.newService.service_description,
+                sub_category_id : this.newService.sub_category_id
+            }
+            axios({url: `${baseURL}/service`, data: obj, method: 'POST'})
+            .then(res=>{
+                console.log(res.data.data)
+                this.$store.commit('endLoading')
+                this.$store.commit('setActiveModal', true)
+                this.showModal = true
+            })
+            .catch(err=>{
+                this.$store.dispatch('handleError', err)
+            })
         }
+    },
+    mounted(){
+        console.log(this.newService)
+        
     }
 }
 </script>
@@ -85,8 +162,8 @@ export default {
   button{
     width: 200px;
     position: absolute;
-    bottom: -180px;
-    right: 80px
-  }
+    /* bottom: -180px; */
+    right: 0  
+ }
 }
 </style>

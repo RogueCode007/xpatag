@@ -21,7 +21,10 @@
         </div> 
         <div class="flex items-start">
           <div class="imgcont relative">
-            <img :src="placeholder" alt="" class="w-full" style="border-radius: 50%; height: 100%">
+            <object :data="image" type="image/png">
+              <img :src="placeholder" alt="Placeholder image" style="border-radius: 50%; height: 100%">
+            </object>
+            <!-- <img :src="user" alt="" class="w-full" style="border-radius: 50%; height: 100%"> -->
             <svg class="check absolute" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="9" cy="9" r="8.5" fill="#52B95E" stroke="white"/>
               <path d="M13 6L7.5 11.5L5 9" stroke="white" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
@@ -50,6 +53,9 @@ export default {
   computed:{
     name(){
       return this.$store.state.user.firstname.toUpperCase() + " " + this.$store.state.user.lastname.toUpperCase()
+    },
+    image(){
+      return this.$store.state.user.image
     }
   }
 }

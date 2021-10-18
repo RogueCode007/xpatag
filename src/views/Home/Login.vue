@@ -14,6 +14,7 @@
             <font-awesome-icon icon="eye" v-if="showEye" class="absolute eye text-gray-500" @click="showPassword"/>
             <font-awesome-icon icon="eye-slash" v-else class="absolute eye text-gray-500" @click="hidePassword"/>
             </div>
+            <p v-if="showError" class="text-sm text-red-500 mt-2">{{errorMsg}}</p>
         </div>
         <p class="mt-4 text-gray-400">Don't have an account? <router-link to="/signup" style="color: #52B95E">Sign up</router-link></p>
         <p class="mt-4 text-gray-400"><router-link to="/forgotpassword" style="color: #52B95E">Forgot password?</router-link></p>
@@ -37,7 +38,9 @@ export default {
     return {
       email: '',
       password: '',
-      showEye : true
+      showEye : true,
+      showError: false,
+      errorMsg : ''
     }
   },
   methods:{
@@ -63,15 +66,17 @@ export default {
       })
       .catch(err=>{
         this.errorMsg = err.data.message
-        if(err.data.message == 'Please verify account first'){
+        console.log(this.errorMsg)
+        if(this.errorMsg == 'Please verify account first'){
           this.$router.push('/signup/verifyotp')
           this.$store.commit('setError', {status: true, msg: err.data.message})
+        }else if(this.errorMsg == 'Unable to login, credentials wrong' || this.errorMsg == 'email is invalid'){
+          this.showError = true
         }else{
-          this.$store.dispatch('handleError', err)
+          this.$store.commit('setError', {status: true, msg: this.errorMsg})
         }
-        // this.$store.commit('setError', {status: true, msg: err.response.data.message})
       })
-    }
+    },
   }
 }
 </script>

@@ -91,9 +91,6 @@ export default {
         this.models = this.state.models
       }
     },
-    // state_id(){
-    //   this.city = ''
-    // }
   },
   methods:{
     checkImage(){
@@ -125,7 +122,6 @@ export default {
     imageUpload(){
       if(this.$refs.image.files[0].type == "image/png" || this.$refs.image.files[0].type == "image/jpeg"){
         this.error.image = false
-        //this.billImage = this.$refs.billImage.files[0]
         let fileToLoad = this.$refs.image.files[0];
         let fileReader = new FileReader();
         let vm = this

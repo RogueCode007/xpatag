@@ -13,6 +13,8 @@ export default new Vuex.Store({
     signupStep: 0,
     user : {},
     newUser : {},
+    newService: {},
+    service: {},
     activeModal : false,
     showError: false,
     showSuccess: false
@@ -60,6 +62,13 @@ export default new Vuex.Store({
       state.showError = payload.status
       state.errorMsg = payload.msg
     },
+    setNewService(state, payload){
+      state.newService = payload
+      console.log(state.newService)
+    },
+    setService(state, payload){
+      state.service = payload
+    }
   },
   actions: {
     registerUser({commit}, user){

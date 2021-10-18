@@ -66,6 +66,21 @@ export default [
                       },
                     ]
                   },
+                  {
+                    path: '/app/dashboard/services/view',
+                    redirect: '/app/dashboard/services/view/info',
+                    component: () => import('../views/Menu/Services/ViewService/ViewService'),
+                    children : [
+                      {
+                        path: '/app/dashboard/services/view/info',
+                        component : () => import('../views/Menu/Services/ViewService/Info')
+                      },
+                      {
+                        path: '/app/dashboard/services/view/package',
+                        component : () => import('../views/Menu/Services/ViewService/Package')
+                      },
+                    ]
+                  },
                 ]
               },
               {

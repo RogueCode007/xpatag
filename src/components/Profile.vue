@@ -2,7 +2,9 @@
   <div class="mt-4 lg:mt-0 cont p-3">
        <div class="flex items-start">
           <div class="imgcont relative">
-            <img :src="placeholder" alt="" class="w-full" style="border-radius: 50%; height: 100%">
+            <object :data="image" type="image/png">
+              <img :src="placeholder" alt="Placeholder image" style="border-radius: 50%; height: 100%">
+            </object>
           </div>
           <div class="ml-3">
             <p class="text-sm font-semibold">{{name}}</p>
@@ -41,6 +43,9 @@ export default {
     computed:{
       name(){
         return this.$store.state.user.firstname.toUpperCase() + " " + this.$store.state.user.lastname.toUpperCase()
+      },
+      image(){
+        return this.$store.state.user.image
       }
     }
 }

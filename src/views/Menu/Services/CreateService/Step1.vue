@@ -4,15 +4,18 @@
       <h1 class="text-black font-bold text-2xl">Service Information</h1>
       <p class="text-gray-500 mt-4">Please let's know your various professions and services</p>
     </div>
-    <form @submit.prevent="submit" class="mt-8 lg:w-full">
+    <form @submit.prevent="checkImage" class="mt-8 lg:w-full">
       <div class="form__div">
-        <input type="text" class="form__input" placeholder=" ">
+        <input type="text" class="form__input" placeholder=" " v-model="name" required>
         <label class="text-gray-500 text-xs form__label">Service Title</label>
       </div>
       <div class="mt-4">
-        <select class="focus:outline-none w-full" style="color: #80868B">
-          <option value="" selected disabled>Service Category</option>
-          <option value="rre">fewkwef</option>
+        <label class="text-sm text-gray-400">Service Category</label>
+        <select v-model="sub_category_id" class="mt-2 bg-white w-full py-2 px-3 rounded outline-none border focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent" required>
+          <option value="" selected disabled>Select a category</option>
+          <optgroup v-for="(category,index) in categories" :key="index" :label="category.name">
+            <option v-for="(sub,index) in category.sub_category" :key="index" :value="sub.sub_category_id">{{sub.name}}</option>
+          </optgroup>
         </select>
       </div>
       <div class="mt-4 py-6" style="border: 1px solid #ECECEC;border-radius: .5rem;">
@@ -22,24 +25,93 @@
             <path d="M27.603 7.63384C25.9115 3.17246 21.6015 0 16.5529 0C11.5043 0 7.19435 3.16876 5.50287 7.63015C2.3378 8.46112 0 11.3455 0 14.7728C0 18.8538 3.30541 22.1592 7.3827 22.1592H8.86368C9.02618 22.1592 9.15913 22.0262 9.15913 21.8637V19.6478C9.15913 19.4853 9.02618 19.3524 8.86368 19.3524H7.3827C6.1381 19.3524 4.96735 18.8575 4.09576 17.96C3.22786 17.0663 2.76621 15.8623 2.80683 14.614C2.84007 13.639 3.17246 12.7231 3.77445 11.9512C4.39121 11.1645 5.25542 10.5921 6.21565 10.3373L7.61538 9.97164L8.12873 8.61992C8.44635 7.77788 8.88953 6.99122 9.4472 6.27844C9.99775 5.57196 10.6499 4.95092 11.3824 4.43553C12.9003 3.3682 14.6879 2.80314 16.5529 2.80314C18.418 2.80314 20.2055 3.3682 21.7234 4.43553C22.4583 4.95258 23.1083 5.57304 23.6586 6.27844C24.2163 6.99122 24.6595 7.78157 24.9771 8.61992L25.4868 9.96794L26.8828 10.3373C28.8845 10.8765 30.2842 12.6972 30.2842 14.7728C30.2842 15.9952 29.8078 17.1475 28.9436 18.0117C28.5198 18.438 28.0156 18.776 27.4603 19.0061C26.9049 19.2363 26.3095 19.3539 25.7084 19.3524H24.2274C24.0649 19.3524 23.9319 19.4853 23.9319 19.6478V21.8637C23.9319 22.0262 24.0649 22.1592 24.2274 22.1592H25.7084C29.7856 22.1592 33.0911 18.8538 33.0911 14.7728C33.0911 11.3492 30.7607 8.4685 27.603 7.63384Z" fill="#52B95E"/>
           </svg>
           <p class="text-xs mt-2 text-center">Upload Service banner image</p>
+          <p class="text-xs mt-2 text-center">{{imageName}}</p>
         </label>
-        <input type="file" id="img" class="hidden">
+        <input type="file" id="img" class="hidden" ref="img" v-on:change="imageUpload">
       </div>
+      <p v-if="error.image" class="mt-2 text-red-500 text-sm">Please upolad a valid image file</p>
       <div class="mt-4 relative" style="min-height: 200px">
-        <textarea class="form__input" placeholder=" "  cols="30" rows="10"></textarea>
+        <textarea class="form__input" placeholder=" "  cols="30" rows="10" v-model="service_description" required></textarea>
         <label class="text-gray-500 text-xs form__label" >Service Description</label>
       </div>
-      <button class="text-white p-3 w-full mt-6 mb-4" style="background: #52B95E;border-radius: 22px;">Save & Continue</button>
+      <div class="relative ">
+        <button class="text-white p-3 w-full mt-6 mb-4" style="background: #52B95E;border-radius: 22px;">Save & Continue</button>
+      </div>
+      
     </form>
   </div>
 </template>
 
 <script>
+import axios from "axios"
+import baseURL from "@/main"
 export default {
-  methods:{
-    submit(){
-      this.$router.push('/app/dashboard/services/create/2')
+  data(){
+    return {
+      categories: [],
+      sub_category_id : '',
+      name: '',
+      image: '',
+      imageName: '',
+      service_description: '',
+      error:{
+        image: false
+      }
     }
+  },
+  methods:{
+     checkImage(){
+      //check if a file has been uploaded and if the file up;oaded is an image file
+      if(this.$refs.img.files[0] && (this.$refs.img.files[0].type == "image/png" || this.$refs.img.files[0].type == "image/jpeg")){
+        this.error.image = false
+        this.validate()
+      }else{
+        this.error.image = true
+      }
+    },
+    imageUpload(){
+      if(this.$refs.img.files[0].type == "image/png" || this.$refs.img.files[0].type == "image/jpeg"){
+        this.error.image = false
+        this.imageName = this.$refs.img.files[0].name
+        //this.billImage = this.$refs.billImage.files[0]
+        let fileToLoad = this.$refs.img.files[0];
+        let fileReader = new FileReader();
+        let vm = this
+        fileReader.onload = function(fileLoadedEvent) {
+          vm.image = fileLoadedEvent.target.result; // <--- data: base64
+        }
+        fileReader.readAsDataURL(fileToLoad);
+      }else{
+        this.error.image = true
+      }
+    },
+    validate(){
+      if(Object.values(this.error).includes(true)){
+        return
+      }else{
+        const obj = {
+          image: this.image,
+          sub_category_id : this.sub_category_id,
+          name: this.name,
+          service_description: this.service_description,
+        }
+        this.$store.commit('setNewService', obj)
+        this.$router.push('/app/dashboard/services/create/2')
+        
+      }
+    },
+  },
+  mounted(){
+    this.$store.commit('startLoading')
+    axios.get(`${baseURL}/category`)
+    .then(res=>{
+      this.$store.commit('endLoading')
+      this.categories = res.data.data
+      console.log(this.categories)
+    })
+    .catch(err=>{
+      this.$store.dispatch('handleError', err)
+    })
   }
 }
 </script>
@@ -121,7 +193,7 @@ select:focus{
   button{
     width: 200px;
     position: absolute;
-    bottom: -60px;
+    /* bottom: -60px; */
     right: 0
   }
 }
