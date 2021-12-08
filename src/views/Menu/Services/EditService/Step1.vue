@@ -44,6 +44,8 @@
 
 <script>
 import {mapState} from "vuex"
+import axios from 'axios'
+import baseURL from '@/main'
 export default {
   data(){
     return {
@@ -59,7 +61,8 @@ export default {
   },
   computed:{
     ...mapState({
-      categories : state => state.categories
+      categories : state => state.categories,
+      service: state => state.service
     })
   },
   methods:{
@@ -93,24 +96,47 @@ export default {
         return
       }else{
         const obj = {
+          service_id: this.service.id,
           image: this.image,
           sub_category_id : this.sub_category_id,
           name: this.name,
           service_description: this.service_description,
         }
-        this.$store.commit('setNewService', obj)
-        this.$router.push('/app/dashboard/services/create/2')
+        // console.log(obj)
+        this.updateService(obj)
+        // this.$store.commit('setNewService', obj)
         
       }
     },
+    updateService(obj){
+        this.$store.commit('startLoading')
+        axios({url: `${baseURL}/service`, data: obj, method: 'PATCH'})
+        .then((res)=>{
+            this.$store.commit('endLoading')
+            this.$store.commit('setSuccess', {status: true, msg: res.data.message})
+            this.$router.push('/app/dashboard/services/edit/2')
+        })
+        .catch((err)=>{
+            this.$store.dispatch('handleError', err)
+        })
+    }
   },
   mounted(){
-    
+    this.name = this.service.name
+    this.service_description = this.service.description
   }
 }
 </script>
 
 <style scoped>
+.inputdiv{
+  border: 1px solid ;
+  border-radius: 4px;
+  padding: 5px;
+}
+.inputdiv input:focus{
+  border: 1px solid red
+}
 .form__div{
   position: relative;
   height: 48px;

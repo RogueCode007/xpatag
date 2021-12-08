@@ -17,9 +17,9 @@
       </div>
       <div class="w-full overflow-x-hidden" style="background-color: #fff">
         <div class="">
-          <main class="">
+          <transition name="fade" mode="out-in">
             <router-view :key="$route.path"></router-view>
-          </main>
+          </transition>
         </div>
       </div>
     </div>
@@ -40,11 +40,18 @@ export default {
 .home{
   height: 100%
 }
-
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
 @media only screen and (min-width: 1024px){
   .wrapper{
     display: grid;
-    grid-template-columns: 200px auto;
+    grid-template-columns: 272px auto;
     grid-template-rows: auto;
     min-height: 100vh;
     width: 100%;

@@ -37,7 +37,7 @@ export default [
               {
                 path: '/app/dashboard/messages',
                 name: 'Messages',
-                component: () => import('../views/Menu/Messages')
+                component: () => import('../views/Menu/Messages/Messages')
               },
               {
                 path: '/app/dashboard/services',
@@ -63,6 +63,21 @@ export default [
                       {
                         path: '/app/dashboard/services/create/2',
                         component : () => import('../views/Menu/Services/CreateService/Step2')
+                      },
+                    ]
+                  },
+                  {
+                    path: '/app/dashboard/services/edit',
+                    redirect: '/app/dashboard/services/edit/1',
+                    component: () => import('../views/Menu/Services/EditService/EditService'),
+                    children : [
+                      {
+                        path: '/app/dashboard/services/edit/1',
+                        component : () => import('../views/Menu/Services/EditService/Step1')
+                      },
+                      {
+                        path: '/app/dashboard/services/edit/2',
+                        component : () => import('../views/Menu/Services/EditService/Step2')
                       },
                     ]
                   },
@@ -103,6 +118,26 @@ export default [
                     name: 'Ratings',
                     component : ()=> import('../views/Menu/Profile/Ratings')
                   },
+                ]
+              },
+              {
+                path: '/app/dashboard/profile/update',
+                redirect: '/app/dashboard/profile/update/personal',
+                component : () => import('../views/Menu/Profile/Update/Profile'),
+                children : [
+                  {
+                    path: '/app/dashboard/profile/update/personal',
+                    component : ()=> import('../views/Menu/Profile/Update/Personal')
+                  },
+                  {
+                    path: '/app/dashboard/profile/update/professional',
+                    component : ()=> import('../views/Menu/Profile/Update/Professional')
+                  },
+                  // {
+                  //   path: '/app/dashboard/profile/ratings',
+                  //   name: 'Ratings',
+                  //   component : ()=> import('../views/Menu/Profile/Ratings')
+                  // },
                 ]
               },
               {

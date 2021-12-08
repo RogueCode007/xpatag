@@ -3,8 +3,8 @@
     <div class="lg:flex justify-between items-center">
         <h1 class="text-black font-bold text-2xl lg:text-3xl">Wallet</h1>
         <div class="flex gap-4 mt-4 lg:mt-0">
-            <router-link to="/" class="mt-4 lg:mt-0 p-2 border text-center border-solid text-sm" style="border-radius: 22px; color: #52B95E; border-color: #52B95E">Bank Settings</router-link>
-            <router-link to="/" class="mt-4 lg:mt-0 p-2 border text-center border-solid text-sm" style="border-radius: 22px; color: #52B95E; border-color: #52B95E">Withdraw Funds</router-link>
+            <button @click="showModal = true" class="mt-4 lg:mt-0 p-2 border text-center border-solid text-sm" style="border-radius: 22px; color: #52B95E; border-color: #52B95E">Bank Settings</button>
+            <button  class="mt-4 lg:mt-0 p-2 border text-center border-solid text-sm" style="border-radius: 22px; color: #52B95E; border-color: #52B95E">Withdraw Funds</button>
         </div>
     </div>
     <div class="cont mt-4 py-2 lg:pb-20">
@@ -14,11 +14,44 @@
         </div>
         <router-view></router-view>
       </div> 
+      <Modal v-if="showModal" v-on:close="showModal = false" :banks="banks"/>
   </div>
 </template>
 
 <script>
+import Modal from "@/components/Wallet/AddBankModal"
+import axios from "axios"
+import baseURL from "@/main"
+import {mapState} from "vuex"
 export default {
+  components:{Modal},
+  data(){
+    return {
+      showModal: false
+    }
+  },
+  computed:{
+    ...mapState({
+      banks : state => state.banks
+    })
+  },
+  methods:{
+    getBanks(){
+      axios.get(`${baseURL}/banks`)
+      .then((res)=>{
+        this.$store.commit('setBanks', res.data.data)
+      })
+      .catch((err)=>{
+        this.$store.dispatch('handleError', err)
+      })
+    }
+  },
+  mounted(){
+    if(this.banks.length == 0){
+      this.getBanks()
+    }
+    
+  },
   created(){
     this.$store.commit('showMobileNav', false)
   }

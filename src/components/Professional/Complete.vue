@@ -1,44 +1,43 @@
 <template>
-  <div class="py-8 lg:py-16 px-3">  
-    <div class="mt-6 infobox">
+  <div class="py-8 lg:py-10 px-3 lg:px-6">  
+    <div class=" infobox">
        <div class="py-4 border-b border-solid lg:flex justify-between">
-           <h3 class="text-xl text-black">Occupation</h3>
-           <p class="mt-4 lg:mt-0 text-xl font-light text-gray-500">Yahoo boy</p>
+           <h3 class="text-base text-black">Occupation</h3>
+           <p class="mt-4 lg:mt-0 text-base  text-gray-500">Yahoo boy</p>
        </div> 
        <div class="py-4 border-b border-solid lg:flex justify-between">
-           <h3 class="text-xl  text-black">Area of Expertise</h3>
-           <p class="mt-4 lg:mt-0 text-xl font-light text-gray-500">Internet Fraud/Scams and Cashouts</p>
+           <h3 class="text-base text-black">Area of Expertise</h3>
+           <p class="mt-4 lg:mt-0 text-base text-gray-500">Internet Fraud/Scams and Cashouts</p>
        </div> 
        <div class="py-4 border-b border-solid justify-between">
-           <h3 class="text-xl  text-black">Skills</h3>
+           <h3 class="text-base  text-black">Skills</h3>
            <div class="mt-4 flex skillbox">
                <div v-for="skill in skills" :key="skill.id" class="border border-solid rounded p-2 text-sm skill">{{skill}}</div>
            </div>
        </div>  
        <div class="py-4 border-b border-solid ">
-           <h3 class="text-xl text-black">Education</h3>
+           <h3 class="text-base text-black">Education</h3>
            <div>
-                <p class="mt-4 font-light text-gray-500">B.A - Computer Science</p>
+                <p class="mt-4 font-normal text-sm text-gray-500">B.A - Computer Science</p>
                 <div class="lg:flex mt-2 justify-between">
-                    <p class="text-sm">YABA COLLEGE OF TECHNOLOGY, Nigeria,</p>
-                    <p class="mt-2 lg:mt-0 text-sm">2019</p>
+                    <p class="text-sm" style="color: #b7b7b7">YABA COLLEGE OF TECHNOLOGY, Nigeria,</p>
+                    <p class="mt-2 lg:mt-0 text-sm" style="color: #b7b7b7">2019</p>
                 </div>
            </div>
        </div> 
        <div class="py-4 border-b border-solid ">
-           <h3 class="text-xl text-black">Certification</h3>
+           <h3 class="text-base text-black">Certification</h3>
            <div>
-                <p class="mt-4 font-light text-gray-500">Certified Expert in Agricultural Finance</p>
+                <p class="mt-4 text-sm text-gray-500">Certified Expert in Agricultural Finance</p>
                 <div class="lg:flex mt-2 justify-between">
-                    <p class="text-sm">Frankfurt School of Finance & Management</p>
-                    <p class="mt-2 lg:mt-0 text-sm">2019</p>
+                    <p class="text-sm" style="color: #b7b7b7">Frankfurt School of Finance & Management</p>
+                    <p class="mt-2 lg:mt-0 text-sm" style="color: #b7b7b7">2019</p>
                 </div>
            </div>
        </div> 
        <div class="py-4 border-b border-solid ">
-           <h3 class="text-xl text-black">Portfolio</h3>
+           <h3 class="text-base text-black">Portfolio</h3>
            <div>
-                <p class="mt-4 font-light text-gray-500">Certified Expert in Agricultural Finance</p>
                 <div class="lg:flex lg:justify-between lg:items-center mt-2">
                     <div class="flex">
                         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -56,8 +55,8 @@
                             </defs>
                         </svg>
                         <div class="ml-2">
-                            <p class=" text-sm">Frankfurt School of Finance & Management</p>
-                            <p class="mt-2 text-sm">2021</p>
+                            <p class=" text-sm text-gray-500">Frankfurt School of Finance & Management</p>
+                            <p class="mt-2 text-sm" style="color: #b7b7b7">2021</p>
                         </div>
                     </div>
                     <p class="mt-2 lg:mt-0 text-sm text-green-500">View</p>

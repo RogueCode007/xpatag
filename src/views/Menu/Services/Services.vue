@@ -7,8 +7,8 @@
 <script>
 
 export default {
-components: {},
-created(){
+  components: {},
+  created(){
     this.$store.commit('showMobileNav', false)
   }
 }

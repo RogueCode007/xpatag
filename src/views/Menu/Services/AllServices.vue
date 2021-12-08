@@ -7,9 +7,10 @@
 <script>
 import Services from "@/components/Services"
 export default {
-    components:{
-        Services
-    }
+  components:{
+    Services
+  },
+  
 }
 </script>
 

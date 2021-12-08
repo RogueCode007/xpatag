@@ -2,13 +2,11 @@
   <div class="py-4 lg:py-6 px-3 lg:px-6">
     <div class="flex justify-between items-center">
       <h1 class="text-black font-bold text-2xl lg:text-3xl">My Profile</h1>
-      <router-link to="/app/dashboard/profile/update" class="mt-4 lg:mt-0 p-2 border text-center border-solid text-sm" style="border-radius: 22px; color: #52B95E; border-color: #52B95E">Update Profile</router-link>
     </div>
     <div class="cont mt-4 py-2 lg:pb-20">
         <div class="border-b border-solid flex justify-between lg:justify-start px-3 lg:px-6">
-          <router-link to="/app/dashboard/profile/personal" class="text-gray-500 py-2 text-xs lg:text-base">Personal Information</router-link>
-          <router-link to="/app/dashboard/profile/professional" class="lg:ml-5 py-2 text-gray-500 text-xs lg:text-base">Professional Information</router-link>
-          <router-link to="/app/dashboard/profile/ratings" class="lg:ml-5 py-2 text-gray-500 text-xs lg:text-base">Ratings</router-link>
+          <router-link to="/app/dashboard/profile/update/personal" class="text-gray-500 py-2 text-xs lg:text-base">Personal Information</router-link>
+          <router-link to="/app/dashboard/profile/update/professional" class="lg:ml-5 py-2 text-gray-500 text-xs lg:text-base">Professional Information</router-link>
         </div>
         <router-view></router-view>
       </div> 

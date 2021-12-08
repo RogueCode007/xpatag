@@ -23,6 +23,9 @@ export default {
       
     }
   },
+  methods:{
+   
+  },
   created(){
     this.$store.commit('showMobileNav', false)
   }

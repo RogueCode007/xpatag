@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: #fff; height: 100%; position: fixed; width: 200px; box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.04); overflow-y: auto">
+  <div style="background-color: #fff; height: 100%; position: fixed; width: 272px; box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.04); overflow-y: auto">
     <ul class="px-4" style="height: 100%">
       <li class="py-3 flex justify-center items-center">
         <svg width="117" height="39" viewBox="0 0 117 39" fill="none" xmlns="http://www.w3.org/2000/svg">

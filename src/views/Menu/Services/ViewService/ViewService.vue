@@ -13,12 +13,12 @@
             </router-link>
             <h1 class="mt-4 lg:mt-0 lg:ml-5 text-black font-bold text-2xl">{{service.name}}</h1>
          </div>
-        <router-link to="/app/dashboard/services/create" class="py-3 px-3 block mt-4 text-sm border border-solid" style="color: #454545; border-color: #454545; border-radius: 20px; max-width:110px">Edit Service</router-link>
+        <router-link to="/app/dashboard/services/edit" class="py-3 px-3 block mt-4 text-sm border border-solid" style="color: #454545; border-color: #454545; border-radius: 20px; max-width:110px">Edit Service</router-link>
       </div>
-      <div class="cont mt-4 py-2">
+      <div class="cont mt-4 py-4">
         <div class="border-b border-solid flex justify-between lg:justify-start px-3">
-          <router-link to="/app/dashboard/services/view/info" class="text-gray-500">Service Info</router-link>
-          <router-link to="/app/dashboard/services/view/package" class="lg:ml-5 text-gray-500">Service Packages</router-link>
+          <router-link to="/app/dashboard/services/view/info" class="text-gray-500 pb-2">Service Info</router-link>
+          <router-link to="/app/dashboard/services/view/package" class="lg:ml-5 text-gray-500 pb-2">Service Packages</router-link>
         </div>
         <router-view></router-view>
       </div>
@@ -32,12 +32,12 @@ export default {
     methods:{
       },
     computed:{
-        ...mapState({
-            service : state => state.service
-        })
+      ...mapState({
+        service : state => state.service
+      })
     },
     mounted(){
-        console.log(this.service)
+        // console.log(this.service)
     }
 }
 </script>

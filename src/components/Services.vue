@@ -4,15 +4,17 @@
       <p class="font-bold text-lg">All Services</p>
        <router-link to="/app/dashboard/services/create" class="py-3 px-3 text-white text-sm" style="background: #52B95E;border-radius: 20px;">Add Service</router-link>
     </div>
-    <div v-if="datas.length > 0" class="box py-8">
-      <div v-for="(data, index) in datas" :key="index" class="item p-3" @click="viewService(data)">
-        <div class="w-full imgbox" style="border-radius: 7.81px">
-          <img :src="data.img" class="w-full h-full">
+    <div v-if="services.length > 0" class="box py-8">
+      <div v-for="(service, index) in services" :key="index" class="item p-3" @click="viewService(service)">
+        <div v-if="service.img" class="w-full imgbox" style="border-radius: 7.81px">
+          <img :src="service.img" class="w-full h-full">
+        </div>
+        <div v-else class="w-full imgbox shadow" style="border-radius: 7.81px">
         </div>
         <div class="mt-2">
-          <h1 class="font-bold text-lg">{{data.name}}</h1> 
-          <h1 class="font-light mt-2 text-lg text-gray-400 ">{{data.title}}</h1> 
-          <p class="mt-4 font-light text-gray-400">{{data.content}}</p>  
+          <h1 class="font-bold text-lg">{{service.name}}</h1> 
+          <h1 class="font-light mt-2 text-sm text-gray-400 ">{{service.category.toUpperCase()}}</h1> 
+          <p class="mt-4 font-light  text-sm text-gray-400">{{service.description}}</p>  
         </div> 
       </div>
     </div>
@@ -55,79 +57,46 @@
 import placeholder from "@/assets/img/Signup/person.png"
 import axios from "axios"
 import baseURL from "@/main"
-import img from "@/assets/img/categories/Rectangle 11.png"
-import img1 from "@/assets/img/categories/Rectangle 11 (1).png"
-import img2 from "@/assets/img/categories/Rectangle 11 (2).png"
-import img3 from "@/assets/img/categories/Rectangle 11 (3).png"
+import {mapState} from "vuex"
 export default {
   data(){
     return {
       placeholder: placeholder,
       datas: [
-        {
-            img: img,
-            title: "Crop Production",
-            name: 'Detecting maize disease',
-            content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni eum ipsum, numquam odio consectetur atque omnis totam nulla aliqua."
-        },
-        {
-            img: img1,
-            title: "Animal Production",
-            name: 'Detecting maize disease',
-            content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni eum ipsum, numquam odio consectetur atque omnis totam nulla aliqua."
-        },
-        {
-            img: img2,
-            title: "Forestry Servcies",
-            name: 'Detecting maize disease',
-            content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni eum ipsum, numquam odio consectetur atque omnis totam nulla aliqua."
-        },
-        {
-            img: img3,
-            title: "Forestry",
-            name: 'Detecting maize disease',
-            content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni eum ipsum, numquam odio consectetur atque omnis totam nulla aliqua."
-        },
-        {
-            img: img,
-            title: "Crop Production",
-            name: 'Detecting maize disease',
-            content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni eum ipsum, numquam odio consectetur atque omnis totam nulla aliqua."
-        },
-        {
-            img: img2,
-            title: "Crop Production",
-            name: 'Detecting maize disease',
-            content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni eum ipsum, numquam odio consectetur atque omnis totam nulla aliqua."
-        },
-        {
-            img: img2,
-            title: "Crop Production",
-            name: 'Detecting maize disease',
-            content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni eum ipsum, numquam odio consectetur atque omnis totam nulla aliqua."
-        },
+        
       ],
       // bookings: []
     }
+  },
+  computed:{
+    ...mapState({
+      services : state => state.services
+    })
   },
   methods:{
     viewService(obj){
       console.log(obj)
       this.$store.commit('setService', obj)
       this.$router.push('/app/dashboard/services/view')
+    },
+    getServices(){
+      this.$store.commit('startLoading')
+      axios.get(`${baseURL}/service`)
+      .then(res=>{
+        this.$store.commit('endLoading')
+        this.$store.commit('setServices', res.data.data)
+        // console.log(res.data.data)
+
+      })
+      .catch(err=>{
+        this.$store.dispatch('handleError', err)
+      })
     }
   },
   mounted(){
-    console.log(this.datas[0].content.length)
-    this.$store.commit('startLoading')
-    axios.get(`${baseURL}/service`)
-    .then(res=>{
-      this.$store.commit('endLoading')
-      console.log(res.data.data)
-    })
-    .catch(err=>{
-      this.$store.dispatch('handleError', err)
-    })
+    if(Object.keys(this.services).length == 0){
+      this.getServices()
+    }
   }
 
 }
@@ -158,7 +127,10 @@ export default {
     border: 0.976378px solid #E8E8E8;
 }
 .imgbox{
-    height: 200px
+  height: 170px
+}
+.imgbox img{
+  border-radius: 7.81px
 }
 
 @media only screen and (min-width: 768px){
@@ -182,11 +154,11 @@ export default {
         flex: 1 1 24%;
         /* max-width: none; */
         margin: 0 0.5%;
-        height: auto
+        
     }
 
     .imgbox{
-      height: 200px;
+      height: 170px;
     }
 }
 @media only screen and (min-width: 1280px){

@@ -15,9 +15,14 @@ export default new Vuex.Store({
     newUser : {},
     newService: {},
     service: {},
+    services: [],
+    banks: [],
+    categories: {},
     activeModal : false,
     showError: false,
-    showSuccess: false
+    showSuccess: false,
+    successMsg : "",
+    errorMsg: ""
     // signupComplete: false
   },
   mutations: {
@@ -68,6 +73,15 @@ export default new Vuex.Store({
     },
     setService(state, payload){
       state.service = payload
+    },
+    setCategories(state, val){
+      state.categories = val
+    },
+    setServices(state, val){
+      state.services = val
+    },
+    setBanks(state, val){
+      state.banks = val
     }
   },
   actions: {

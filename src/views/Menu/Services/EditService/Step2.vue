@@ -69,19 +69,17 @@
         </div>
         
     </form> 
-    <Modal v-if="showModal" v-on:close="close"/>
   </div>
 </template>
 
 <script>
-import Modal from "@/components/ServiceAdded.vue"
 import axios from "axios"
 import baseURL from "@/main"
 import {mapState} from 'vuex'
 import {Money} from "v-money"
 export default {
     components:{
-        Modal, Money
+        Money
     },
     data(){
         return {
@@ -106,15 +104,10 @@ export default {
     },
     computed:{
         ...mapState({
-            newService : state => state.newService
+            service : state => state.service
         })
     },
     methods:{
-        close(){
-            this.$store.commit('setActiveModal', false)
-            this.showModal = false
-            this.getServices()
-        },
         submit(){
             this.$store.commit('startLoading')
             const obj = {
@@ -127,29 +120,23 @@ export default {
                 silver_upper_bound: this.silver_upper_bound * 100,
                 gold_lower_bound : this.gold_lower_bound * 100,
                 gold_upper_bound : this.gold_upper_bound * 100,
-                name: this.newService.name,
-                image: this.newService.image,
-                service_description : this.newService.service_description,
-                sub_category_id : this.newService.sub_category_id
+                service_package_id: this.service.packages.package_id,
             }
-            axios({url: `${baseURL}/service`, data: obj, method: 'POST'})
-            .then(res=>{
-                console.log(res.data.data)
-                this.$store.commit('endLoading')
-                this.$store.commit('setActiveModal', true)
-                this.showModal = true
+            axios({url: `${baseURL}/service/package`, data: obj, method: 'PATCH'})
+            .then(()=>{
+                this.getServices()
             })
             .catch(err=>{
                 this.$store.dispatch('handleError', err)
             })
         },
         getServices(){
-            this.$store.commit('startLoading')
             axios.get(`${baseURL}/service`)
             .then(res=>{
                 this.$store.commit('endLoading')
                 this.$store.commit('setServices', res.data.data)
                 this.$router.push('/app/dashboard/services')
+                this.$store.commit('setSuccess', {status: true, msg: 'service package edited'})
             })
             .catch(err=>{
                 this.$store.dispatch('handleError', err)
@@ -157,8 +144,15 @@ export default {
         }
     },
     mounted(){
-        console.log(this.newService)
-        
+        this.bronze_description = this.service.packages.bronze_description
+        this.silver_description = this.service.packages.silver_description
+        this.gold_description = this.service.packages.gold_description
+        this.bronze_lower_bound = this.service.packages.bronze_range.split(' - ')[0].slice(0, this.service.packages.bronze_range.split(' - ')[0].length - 2)
+        this.bronze_upper_bound = this.service.packages.bronze_range.split(' - ')[1].slice(0, this.service.packages.bronze_range.split(' - ')[1].length - 2)
+        this.silver_lower_bound = this.service.packages.silver_range.split(' - ')[0].slice(0, this.service.packages.silver_range.split(' - ')[0].length - 2)
+        this.silver_upper_bound = this.service.packages.silver_range.split(' - ')[1].slice(0, this.service.packages.silver_range.split(' - ')[1].length - 2)
+        this.gold_lower_bound = this.service.packages.gold_range.split(' - ')[0].slice(0, this.service.packages.gold_range.split(' - ')[0].length - 2)
+        this.gold_upper_bound = this.service.packages.gold_range.split(' - ')[1].slice(0, this.service.packages.gold_range.split(' - ')[1].length - 2)
     }
 }
 </script>

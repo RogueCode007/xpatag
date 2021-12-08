@@ -1,8 +1,8 @@
 <template>
-  <div class="px-3 pt-5 lg:flex lg:gap-10 lg:pr-10">
+  <div class="px-3 lg:px-6 pt-5 lg:flex lg:gap-10 lg:pr-10">
     <div class="lg:w-2/5">
       <h1 class="text-black font-bold text-2xl">Professional Information</h1>
-      <p class="text-gray-500 mt-4">Now is your chance to shine. Make it clear to potential purchasers what you excel at and how you acquired your talents, certificates, and expertise.</p>
+      <p class="text-gray-500 text-sm mt-4">Now is your chance to shine. Make it clear to potential purchasers what you excel at and how you acquired your talents, certificates, and expertise.</p>
     </div>
     <form action="#" @submit.prevent="" class="mt-8 lg:w-full">
         <div class="lg:flex lg:gap-4 lg:justify-between">
@@ -19,9 +19,11 @@
         </div>
         <hr class="mt-4">
         <div>
-            <p class="text-gray-500 text-lg mt-4">ADD SKILLS</p>
+            <p class="text-gray-500 text-sm mt-4">ADD SKILLS</p>
             <div class="mt-4 relative pt-4" v-for="(skill, index) in skills" :key="index">
-                <font-awesome-icon icon="trash" class="text-red-500 absolute cursor-pointer" v-if="index > 0" @click="removeSkill(index)" style="right: 0; top: 0"/>
+                <svg class="absolute cursor-pointer right-0 top-0"  v-if="index > 0" @click="removeSkill(index)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.59 7L12 10.59L8.41 7L7 8.41L10.59 12L7 15.59L8.41 17L12 13.41L15.59 17L17 15.59L13.41 12L17 8.41L15.59 7Z" fill="#ff0000"></path>
+                </svg>
                 <div class="lg:flex lg:gap-4 lg:justify-between mt-2">
                     <div class="form__div lg:mt-0 lg:w-full">
                         <input type="text" v-model="skill.skill" class="form__input" placeholder=" ">
@@ -41,9 +43,11 @@
             <hr class="mt-4" style="margin-top: 70px">
         </div>
         <div>
-            <p class="text-gray-500 text-lg mt-4">EDUCATION</p>
+            <p class="text-gray-500 text-sm mt-4">EDUCATION</p>
             <div class="mt-4 relative pt-4" v-for="(degree, index) in degrees" :key="index">
-                <font-awesome-icon icon="trash" class="text-red-500 absolute cursor-pointer" v-if="index > 0" @click="removeDegree(index)" style="right: 0; top: 0"/>
+                <svg class="absolute cursor-pointer right-0 top-0"  v-if="index > 0" @click="removeDegree(index)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.59 7L12 10.59L8.41 7L7 8.41L10.59 12L7 15.59L8.41 17L12 13.41L15.59 17L17 15.59L13.41 12L17 8.41L15.59 7Z" fill="#ff0000"></path>
+                </svg>
                 <div class="form__div mt-2 ">
                     <input type="text" v-model="degree.university_name" class="form__input" placeholder=" ">
                     <label class="text-gray-500 text-xs form__label">University Name</label>
@@ -66,9 +70,11 @@
             <hr class="mt-4" style="margin-top: 70px">
         </div>
         <div>
-            <p class="text-gray-500 text-lg mt-4">CERTIFICATION</p>
+            <p class="text-gray-500 text-sm mt-4">CERTIFICATION</p>
             <div class="mt-4 relative pt-4" v-for="(cert, index) in certifications" :key="index">
-                <font-awesome-icon icon="trash" class="text-red-500 absolute cursor-pointer" v-if="index > 0" @click="removeCert(index)" style="right: 0; top: 0"/>
+                <svg class="absolute cursor-pointer right-0 top-0"  v-if="index > 0" @click="removeCert(index)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.59 7L12 10.59L8.41 7L7 8.41L10.59 12L7 15.59L8.41 17L12 13.41L15.59 17L17 15.59L13.41 12L17 8.41L15.59 7Z" fill="#ff0000"></path>
+                </svg>
                 <div class=" mt-2 px-2 rounded" style="height: 58px; border: 1px solid #ECECEC; ">
                     <label class="text-gray-500 text-xs">Certificate</label>
                     <input type="file" class="block" placeholder=" " @change="addCertFile(index)">
@@ -92,8 +98,10 @@
         </div>
         <div class="mt-4">
             <div class="mt-4 relative pt-4" v-for="(memb, index) in memberships" :key="index">
-                <font-awesome-icon icon="trash" class="text-red-500 absolute cursor-pointer" v-if="index > 0" @click="removeMembership(index)" style="right: 0; top: 0"/>
-                <div class="form__div">
+                <svg class="absolute cursor-pointer right-0 top-0"  v-if="index > 0" @click="removeMembership(index)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.59 7L12 10.59L8.41 7L7 8.41L10.59 12L7 15.59L8.41 17L12 13.41L15.59 17L17 15.59L13.41 12L17 8.41L15.59 7Z" fill="#ff0000"></path>
+                </svg>
+                <div class="form__div mt-2">
                     <input type="text" v-model="memb.name" class="form__input" placeholder=" ">
                     <label class="text-gray-500 text-xs form__label">Professional Membership</label>
                 </div>
@@ -104,9 +112,11 @@
             <hr class="mt-4" style="margin-top: 70px">
         </div>
         <div>
-            <p class="text-gray-500 text-lg mt-4">AWARDS</p>
+            <p class="text-gray-500 text-sm mt-4">AWARDS</p>
             <div class="mt-4 relative pt-4" v-for="(item, index) in awards" :key="index">
-                <font-awesome-icon icon="trash" class="text-red-500 absolute cursor-pointer" v-if="index > 0" @click="removeAward(index)" style="right: 0; top: 0"/>
+                <svg class="absolute cursor-pointer right-0 top-0"  v-if="index > 0" @click="removeAward(index)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.59 7L12 10.59L8.41 7L7 8.41L10.59 12L7 15.59L8.41 17L12 13.41L15.59 17L17 15.59L13.41 12L17 8.41L15.59 7Z" fill="#ff0000"></path>
+                </svg>
                 <div class="form__div mt-2 ">
                     <input type="text" v-model="item.institue" class="form__input" placeholder=" ">
                     <label class="text-gray-500 text-xs form__label">Award Institute</label>
@@ -128,9 +138,11 @@
             <hr class="mt-4" style="margin-top: 70px">
         </div>
         <div>
-            <p class="text-gray-500 text-lg mt-4">PORTFOLIO</p>
+            <p class="text-gray-500 text-sm mt-4">PORTFOLIO</p>
             <div class="mt-4 mb-12 relative pt-4" v-for="(item, index) in portfolios" :key="index">
-                <font-awesome-icon icon="trash" class="text-red-500 absolute cursor-pointer" v-if="index > 0" @click="removePortfolio(index)" style="right: 0; top: 0"/>
+                <svg class="absolute cursor-pointer right-0 top-0"  v-if="index > 0" @click="removePortfolio(index)" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.59 7L12 10.59L8.41 7L7 8.41L10.59 12L7 15.59L8.41 17L12 13.41L15.59 17L17 15.59L13.41 12L17 8.41L15.59 7Z" fill="#ff0000"></path>
+                </svg>
                 <div class="lg:flex lg:gap-4 lg:justify-between mt-4">
                     <div class="form__div lg:w-full">
                         <input type="text" v-model="item.year" class="form__input" placeholder=" ">
@@ -150,7 +162,7 @@
                 Add
             </button>
         </div>
-        <button @click="submit" class="text-white p-3 w-full mt-6 mb-4 submit" style="background: #52B95E;border-radius: 22px;">Continue</button>
+        <button @click="submit" class="text-white p-3 w-full mt-6 mb-4 submit" style="background: #52B95E;border-radius: 22px;">Save</button>
     </form>
     <Updated v-if="completed" v-on:close="completed = false" />
   </div>
@@ -282,13 +294,14 @@ select{
   color: #80868B;
   padding: 0 .25rem;
   background-color: #fff;
-  font-size: 1rem;
+  font-size: 12px;
   transition: .3s;
 }
 select{
   border: 1px solid #ECECEC;
   border-radius: .5rem;
   padding-left: 1rem;
+  font-size: 12px
 }
 select:focus{
   border: 1px solid #1A73E8;
