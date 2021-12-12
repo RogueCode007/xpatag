@@ -4,15 +4,20 @@
       <h1 class="text-black font-bold text-2xl">Personal Information</h1>
       <p class="text-gray-500 text-sm mt-6 font-normal">Please tell us a little bit about yourself. This information will be displayed on your public profile, allowing potential clients to learn more about you.</p>
     </div>
-    <form @submit.prevent="submit" class="mt-8 lg:w-full">
+    <!-- <form @submit.prevent="submit" class="mt-8 lg:w-full"> -->
+    <div class="mt-8 lg:w-full rightbox">
      <div class="lg:flex lg:gap-4 lg:justify-between">
-        <div class="form__div lg:w-full">
+        <!-- <div class="form__div lg:w-full">
             <input type="text" class="form__input" placeholder=" ">
             <label class="text-gray-500 text-xs form__label">First name</label>
+        </div> -->
+        <div class="lg:w-full textbox">
+          <label >First Name</label>
+          <p class="border px">{{user.firstname}}</p>
         </div>
-        <div class="form__div mt-4 lg:mt-0 lg:w-full">
-            <input type="text" class="form__input" placeholder=" ">
-            <label class="text-gray-500 text-xs form__label">Last name</label>
+        <div class="mt-4 lg:mt-0 lg:w-full textbox">
+          <label >Last Name</label>
+          <p class="border px">{{user.lastname}}</p>
         </div>
      </div>
       <div class="mt-4">
@@ -24,10 +29,10 @@
           </label>
           <input type="file" class="hidden" ref="img">
       </div>
-      <div class="mt-4 flex">
-        <div class="form__div w-full">
-            <input type="email" class="form__input" placeholder=" ">
-            <label class="text-gray-500 text-xs form__label">Email</label>
+      <div class="mt-4 flex items-center">
+        <div class="w-full textbox">
+          <label >Email</label>
+          <p class="border px">{{user.email}}</p>
         </div>
         <div class="ml-4 flex items-center" style="color: #52B95E;font-size: 14px">
             <svg class="mr-3" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -37,10 +42,10 @@
             Verified
         </div>
       </div>
-      <div class="mt-4 flex">
-        <div class="form__div w-full">
-            <input type="text" class="form__input" placeholder=" ">
-            <label class="text-gray-500 text-xs form__label">Phone Number</label>
+      <div class="mt-4 flex items-center">
+        <div class="w-full textbox">
+          <label >Phone Number</label>
+          <p class="border px">{{user.phone}}</p>
         </div>
         <div class="ml-4 flex items-center" style="color: #52B95E;font-size: 14px">
             <svg class="mr-3" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -49,18 +54,26 @@
             </svg>
             Verified
         </div>
+      </div>
       </div>
       <!-- <div class="mt-4 relative" style="min-height: 200px">
         <textarea class="form__input" placeholder="Share your professional experience, successful projects completed in the past and your years of expertise. Leave a convincing bio that will attract clients. "  cols="30" rows="10"></textarea>
         <label class="text-gray-500 text-xs form__label" >Service Description</label>
       </div> -->
-      <button class="text-white p-3 w-full mt-6 mb-4" style="background: #52B95E;border-radius: 22px;">Save</button>
-    </form>
+      <!-- <button class="text-white p-3 w-full mt-6 mb-4" style="background: #52B95E;border-radius: 22px;">Save</button> -->
+    <!-- </form> -->
   </div>
 </template>
 
 <script>
+import {mapState}  from 'vuex'
 export default {
+  computed:{
+    ...mapState({
+      user: state => state.user,
+      profile : state => state.profile.professionalProfile
+    })
+  },
   methods:{
     submit(){
       this.$router.push('/app/dashboard/services/create/2')
@@ -76,6 +89,16 @@ export default {
   border-radius: 50%;
   background-color: #DDDDDD;
   /* border: 1px solid red */
+}
+.textbox p{
+  padding: 0.6rem;
+  border: 1px solid #ECECEC;
+  font-size: 1rem;
+  border-radius: .5rem;
+}
+.textbox label{
+  color: #80868B;
+  font-size: 12px;
 }
 .form__div{
   position: relative;
@@ -142,6 +165,9 @@ select:focus{
     max-width: 500px;
     position: relative;
     padding-bottom: 20px;
+  }
+  .rightbox{
+    max-width: 500px;
   }
   button{
     width: 200px;

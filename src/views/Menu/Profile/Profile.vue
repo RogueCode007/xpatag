@@ -16,7 +16,34 @@
 </template>
 
 <script>
+import axios from 'axios'
+import baseURL from "@/main"
+import {mapState} from 'vuex'
 export default {
+  computed:{
+    ...mapState({
+      userId: state => state.user.user_id,
+      profile : state => state.profile.professionalProfile
+    })
+  },
+  methods:{
+    getProfile(){
+      this.$store.commit('startLoading')
+      axios.get(`${baseURL}/expert/profile/${this.userId}`)
+      .then((res)=>{
+          this.$store.commit('setProfessionalProfile', res.data.data.profile)
+          this.$store.commit('endLoading')
+      })
+      .catch((err)=>{
+          this.$store.dispatch('handleError', err)
+      })
+    }
+  },
+  mounted(){
+    // if(Object.keys(this.profile).length == 0){
+      this.getProfile()
+    // }
+  },
   created(){
     this.$store.commit('showMobileNav', false)
   }

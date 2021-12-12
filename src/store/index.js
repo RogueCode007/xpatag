@@ -4,6 +4,7 @@ import axios from 'axios'
 import router from "../router/index"
 import createPersistedState from "vuex-persistedstate";
 import baseURL from "@/main"
+import profile from "./modules/profile"
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -151,6 +152,7 @@ export default new Vuex.Store({
     }
   },
   modules: {
+    profile
   },
   plugins: [createPersistedState()]
 })
