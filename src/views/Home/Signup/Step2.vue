@@ -27,7 +27,7 @@
       <div class="mt-4">
         <label class="text-sm text-gray-400">Phone number</label>
         <input v-model="phone" type="text" class="mt-2 bg-white w-full py-2 px-3 rounded outline-none border focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent" required>
-        <p v-if="error.phone" class="text-red-500 text-sm mt-2">Please enter a valid phone number</p>
+        <p v-if="phone.length > 0 && error.phone" class="text-red-500 text-sm mt-2">Please enter a valid phone number</p>
       </div>
       <div class="mt-4">
         <label class="text-sm text-gray-400">Address</label>

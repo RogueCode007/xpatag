@@ -7,7 +7,7 @@
           </div>
           <div>
           <p class="font-bold">Bronze</p>
-          <p class="mt-1 text-xl font-bold">{{service.packages.bronze_range}}</p>
+          <p class="mt-1 text-xl font-bold">{{service.packages[0].range}}</p>
           </div>
       </div>
       <ul>
@@ -15,7 +15,7 @@
           <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M11.0933 1.55713L4.37269 8.18616L1.31787 5.17296" stroke="#9A9A9A" stroke-width="1.20528" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <p>{{service.packages.bronze_description}}</p>
+          <p>{{service.packages[0].description}}</p>
           </li>
       </ul>
     </div>
@@ -26,7 +26,7 @@
           </div>
           <div>
           <p class="font-bold">Silver</p>
-          <p class="mt-1 text-xl font-bold">{{service.packages.silver_range}}</p>
+          <p class="mt-1 text-xl font-bold">{{service.packages[1].range}}</p>
           </div>
       </div>
       <ul>
@@ -34,7 +34,7 @@
           <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M11.0933 1.55713L4.37269 8.18616L1.31787 5.17296" stroke="#9A9A9A" stroke-width="1.20528" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <p>{{service.packages.silver_description}}</p>
+          <p>{{service.packages[1].description}}</p>
           </li>
       </ul>
     </div>
@@ -45,7 +45,7 @@
           </div>
           <div>
           <p class="font-bold">Gold</p>
-          <p class="mt-1 text-xl font-bold">{{service.packages.gold_range}}</p>
+          <p class="mt-1 text-xl font-bold">{{service.packages[2].range}}</p>
           </div>
       </div>
       <ul>
@@ -53,7 +53,7 @@
           <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M11.0933 1.55713L4.37269 8.18616L1.31787 5.17296" stroke="#9A9A9A" stroke-width="1.20528" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <p>{{service.packages.gold_description}}</p>
+          <p>{{service.packages[2].description}}</p>
           </li>
       </ul>
     </div>

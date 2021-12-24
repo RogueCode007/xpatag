@@ -8,8 +8,6 @@
             <input type="text" class="blue-bg outline-none ring-1 ring-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent" ref="d2" id="d2" v-model="digit2"  maxlength="1"  @keyup="keyMonitor" required />
             <input type="text" class="blue-bg outline-none ring-1 ring-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent" ref="d3" id="d3" v-model="digit3"  maxlength="1" @keyup="keyMonitor" required />
             <input type="text" class="blue-bg outline-none ring-1 ring-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent" ref="d4" id="d4" v-model="digit4"  maxlength="1" @keyup="keyMonitor" required />
-            <input type="text" class="blue-bg outline-none ring-1 ring-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent" ref="d5" id="d5" v-model="digit5"  maxlength="1" @keyup="keyMonitor" required />
-            <input type="text" class="blue-bg outline-none ring-1 ring-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent" ref="d6" id="d6" v-model="digit6"  maxlength="1" @keyup="keyMonitor" required />
           </div>
           <p class="text-red-500 mt-4 text-center">{{errorMsg}}</p>
           <button class="mt-10 outline-none py-2 w-full lg:w-4/5 lg:block lg:mx-auto text-white focus:outline-none" style="background-color: #52B95E; border-radius: 22px">Verify</button>
@@ -28,14 +26,12 @@ export default {
         digit2: '',
         digit3: '',
         digit4: '',
-        digit5: '',
-        digit6: ''
         }
     },
     methods:{
         validateForm(){
             this.$store.commit('startLoading')
-            const otp = this.digit1.concat(this.digit2, this.digit3, this.digit4, this.digit5, this.digit6)
+            const otp = this.digit1.concat(this.digit2, this.digit3, this.digit4)
             axios({url: `${baseURL}/verify/otp`, data: {otp: otp}, method: 'POST'})
             .then((res) => {
                 console.log(res)
@@ -70,10 +66,6 @@ export default {
             this.$refs.d3.focus()
         }else if(id == "d3"){
             this.$refs.d4.focus()
-        }else if(id == "d4"){
-            this.$refs.d5.focus()
-        }else if(id == "d5"){
-            this.$refs.d6.focus()
         }
         },
         del(id){
@@ -90,14 +82,6 @@ export default {
                 this.$refs.d4.value = ''
                 this.$refs.d3.focus()
             }
-            else if(id == "d5"){
-                this.$refs.d5.value = ''
-                this.$refs.d4.focus()
-            }
-            else if(id == "d6"){
-                this.$refs.d5.value = ''
-                this.$refs.d5.focus()
-            }
         }
         
     },
@@ -106,7 +90,7 @@ export default {
 
 <style soped>
 div.otps input{
-  width: 30px;
+  width: 40px;
   height: 50px;
   outline: none;
   background-color: #E2F5EC;

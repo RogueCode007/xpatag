@@ -60,9 +60,15 @@ export default {
       this.$store.commit('startLoading')
       this.$store.dispatch('loginUser', user)
       .then(res=>{
-        console.log(res)
         this.$store.commit('endLoading')
-        this.$router.push('/app')
+        console.log(res.data.data.role)
+        if(res.data.data.role !== 'expert'){
+          this.$store.dispatch('logoutUser')
+          this.$store.commit('setError', {status: true, msg: 'User account required'})
+          this.$router.push('/login')
+        }else{
+          this.$router.push('/app')
+        }
       })
       .catch(err=>{
         this.errorMsg = err.data.message

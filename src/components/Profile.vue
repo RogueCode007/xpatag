@@ -25,7 +25,7 @@
           </div>
         </div>
         <router-link to="/app/dashboard/settings" class="block text-green-500 mt-4">Edit profile</router-link>
-        <p class="text-green-500 mt-4">View inbox</p>
+        <router-link to="/app/dashboard/messages" class="block text-green-500 mt-4">View Inbox</router-link>
         <p class="text-green-500 mt-4">Invite friends</p>
         <p class="text-green-500 mt-4">Earning - #0.00</p>
   </div>

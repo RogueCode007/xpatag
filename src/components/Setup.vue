@@ -34,7 +34,7 @@
                 </svg>
                 <p class="ml-4">Add Payment details</p>
             </div>  
-            <button style="width: 150px" class="lg:ml-3 mt-4 lg:mt-0 text-sm text-green-500 rounded-3xl px-2 py-2 border border-solid border-green-500 bg-white oultine-none focus:outline-none">Add details</button>
+            <router-link to="/app/dashboard/wallet" style="width: 150px" class="lg:ml-3 mt-4 lg:mt-0 text-sm text-center text-green-500 rounded-3xl px-2 py-2 border border-solid border-green-500 bg-white oultine-none focus:outline-none">Add details</router-link>
         </div>
     </div> 
 </template>

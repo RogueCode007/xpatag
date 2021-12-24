@@ -31,11 +31,11 @@ export default {
       this.$store.commit('startLoading')
       axios.get(`${baseURL}/expert/profile/${this.userId}`)
       .then((res)=>{
-          this.$store.commit('setProfessionalProfile', res.data.data.profile)
-          this.$store.commit('endLoading')
+        this.$store.commit('setProfessionalProfile', res.data.data.profile)
+        this.$store.commit('endLoading')
       })
       .catch((err)=>{
-          this.$store.dispatch('handleError', err)
+        this.$store.dispatch('handleError', err)
       })
     }
   },

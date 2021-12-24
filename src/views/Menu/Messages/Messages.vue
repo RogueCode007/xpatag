@@ -4,21 +4,19 @@
       <MobileList :list="list" v-if="!showChat" v-on:openChat="handleOpenChat"></MobileList>
       <ChatScreen v-else 
       :person="person" 
-      :usertyping="usertyping"
+      :messages="messages"
+      v-on:sendContract="handleNewContract"
       v-on:close="handleCloseChat" 
       v-on:newMessage="handleNewMessage"
-      v-on:typing="typing"
-      v-on:stopTyping="stopTyping"
       />
     </div>
     <div class="hidden lg:flex gap-6">
       <WebList :list="list" v-on:openChat="handleOpenChat" class="list"/>
       <ChatScreen 
       :person="person" 
-      :usertyping="usertyping"
+      v-on:sendContract="handleNewContract"
+      :messages="messages"
       v-on:newMessage="handleNewMessage"
-      v-on:typing="typing"
-      v-on:stopTyping="stopTyping"
       class="chat"
       />
     </div>
@@ -26,10 +24,13 @@
 </template>
 
 <script>
-import io from "socket.io-client"
+// import io from "socket.io-client"
 import MobileList from "./MobileList"
 import WebList from "./WebList"
 import ChatScreen from './ChatScreen'
+import {mapState} from 'vuex'
+import axios from 'axios'
+import baseURL from '@/main'
 export default {
   components:{
     MobileList, 
@@ -39,58 +40,109 @@ export default {
   data() {
     return {
       showChat : false,
-      connection: null,
       person: null,
+      data: {},
       usertyping: false,
       socket: {},
-      list: [{name: "Obiwan Pelosi", msg: "Lorem ipsum udeiwuwh wdhiuhd whdihwdihwwdh hwdhw", time: "12:54", messages: []},{name: "Ragnar Dothraki", msg: "Lorem ipsum udeiwuwh wdhiuhd whdihwdihwwdh hwdhw", time: "12:54", messages: []}, 
-              {name: "Tulsi Gabbard", msg: "Lorem ipsum udeiwuwh wdhiuhd whdihwdihwwdh hwdhw", time: "12:54", messages: []}, {name: "Joe Biden", msg: "Lorem ipsum udeiwuwh wdhiuhd whdihwdihwwdh hwdhw", time: "12:54", messages: []}, 
-              {name: "Bill De Blasio", msg: "Lorem ipsum udeiwuwh wdhiuhd whdihwdihwwdh hwdhw", time: "12:54", messages: []},
-              {name: "Bill De Blasio", msg: "Lorem ipsum udeiwuwh wdhiuhd whdihwdihwwdh hwdhw", time: "12:54", messages: []},
-              {name: "Bill De Blasio", msg: "Lorem ipsum udeiwuwh wdhiuhd whdihwdihwwdh hwdhw", time: "12:54", messages: []},
-              {name: "Bill De Blasio", msg: "Lorem ipsum udeiwuwh wdhiuhd whdihwdihwwdh hwdhw", time: "12:54", messages: []},
-              {name: "Bill De Blasio", msg: "Lorem ipsum udeiwuwh wdhiuhd whdihwdihwwdh hwdhw", time: "12:54", messages: []},
-            ]
+      connection: {},
+      list: [],
+      messages: [],
+      room_id: null
     }
   },
+  computed:{
+    ...mapState({
+      userId: state => state.user.user_id
+    })
+  },
   methods:{
-    // seeSocket(){
-    //   this.socket.on('socketConnection', obj)
-    // }
+    // getLink(){
+    //   this.$store.commit('startLoading')
+    //   axios({url: `${baseURL}/service/book`, data: {service_id: parseInt(this.expertId)}, method: 'POST'})
+    //   .then((res)=>{
+    //     this.$store.commit('endLoading')
+    //     this.data = res.data.data
+    //     console.log(this.data)
+    //     this.connect()
+    //   })
+    //   .catch((err)=>{
+    //     this.$store.dispatch('handleError', err)
+    //   })
+    // },
+    connect(url){
+      this.connection = new WebSocket(`${url}`)
+      let vm = this
+      this.connection.onmessage =  function(event){
+        let data = JSON.parse(event.data)
+        if(vm.room_id == data.chat_room_id){
+          if(data.contract == 'false'){ 
+            vm.messages.push({sender:{id: data.user_id}, messages: data.message, contract: false})
+          }else if(data.contract == 'true'){
+            vm.messages.push({sender:{id: data.user_id}, contract_detail: data.contract_detail, contract: true})
+          }
+        }
+      }
+    },
     handleOpenChat(obj){
+      this.getChatThread(obj.chat_room_id)
+      this.room_id = obj.chat_room_id
       this.person = obj
       this.showChat = true
+      this.connection.onmessage = undefined
+      this.connect(obj.url)
     },
     handleCloseChat(){
       this.person = null,
       this.showChat = false
     },
     handleNewMessage(msg){
-      this.person.messages.push({msg: msg, type: 0})
-      this.socket.emit('sendMessage', msg)
+      let todayDate = new Date().toISOString().slice(0, 10);
+      this.connection.send(JSON.stringify({user_id: this.userId, chat_room_id: this.room_id,  message: msg, contract: 'false', created_at: todayDate, contract_details: {}}))
     },
-    sendNewMessage(msg){
-      this.person.messages.push({msg: msg, type: 1})
+    handleNewContract(obj){
+      let todayDate = new Date().toISOString().slice(0, 10);
+      this.connection.send(JSON.stringify({user_id: this.userId, chat_room_id: this.room_id,  message: '', contract: 'true', created_at: todayDate, 
+      contract_detail: {amount: obj.amount ,start: obj.start, end: obj.end, description: obj.description}
+      }))
     },
-    typing(){
-      this.socket.emit('typing')
+    getChats(){
+      this.$store.commit('startLoading')
+      axios.get(`${baseURL}/chat/list`)
+      .then((res)=>{
+        this.$store.commit('endLoading')
+        this.list = res.data.data
+        console.log(this.list)
+      })
+      .catch((err)=>{
+        this.$store.dispatch('handleError', err)
+      })
     },
-    stopTyping(){
-      this.socket.emit('stopTyping')
-    },
+    getChatThread(id){
+      this.$store.commit('startLoading')
+      axios.get(`${baseURL}/chats/${id}`)
+      .then((res)=>{
+        this.$store.commit('endLoading')
+        this.messages = res.data.data
+        console.log(this.messages)
+      })
+      .catch((err)=>{
+        this.$store.dispatch('handleError', err)
+      })
+    }
   },
   created() {
     this.$store.commit('showMobileNav', false)
-    this.socket = io("http://localhost:3000")
-    this.socket.on('sendMessage', (msg)=>{
-      this.sendNewMessage(msg)
-    })
-    this.socket.on('typing', ()=>{
-      this.usertyping = true
-    })
-    this.socket.on('stopTyping', ()=>{
-      this.usertyping = false
-    })
+    this.getChats()
+    this.connection.onmessage = function(event){
+      console.log(event)
+    }
+    this.connection.onopen = function(event){
+      console.log(event)
+      console.log("Successfully connected to the echo websocket server...")
+    }
+  },
+  destroyed(){
+    this.connection = {}
   }
 }
 </script>

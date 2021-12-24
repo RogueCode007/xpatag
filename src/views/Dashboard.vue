@@ -16,7 +16,7 @@
         </svg>
       </div>
       <div class="w-full overflow-x-hidden" style="background-color: #fff">
-        <div class="">
+        <div class="">  
           <transition name="fade" mode="out-in">
             <router-view :key="$route.path"></router-view>
           </transition>

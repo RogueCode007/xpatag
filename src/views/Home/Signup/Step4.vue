@@ -14,31 +14,31 @@
     <form @submit.prevent="submit" class="mt-6">
       <div class="flex-cont ">
         <label class="container">One
-          <input type="checkbox" v-model="working_days" value="sunday">
+          <input type="checkbox" v-model="working_days" :value="7">
           <span class="checkmark">Sunday</span>
         </label>
         <label class="container">Two
-          <input type="checkbox" v-model="working_days" value="monday">
+          <input type="checkbox" v-model="working_days" :value="1">
           <span class="checkmark">Monday</span>
         </label>
         <label class="container">Three
-          <input type="checkbox" v-model="working_days" value="tuesday">
+          <input type="checkbox" v-model="working_days" :value="2">
           <span class="checkmark">Tuesday</span>
         </label>
         <label class="container">Four
-          <input type="checkbox" v-model="working_days" value="wednesday">
+          <input type="checkbox" v-model="working_days" :value="3">
           <span class="checkmark">Wednesday</span>
         </label>
         <label class="container">Four
-          <input type="checkbox" v-model="working_days" value="thursday">
+          <input type="checkbox" v-model="working_days" :value="4">
           <span class="checkmark">Thursday</span>
         </label>
         <label class="container">Four
-          <input type="checkbox" v-model="working_days" value="friday">
+          <input type="checkbox" v-model="working_days" :value="5">
           <span class="checkmark">Friday</span>
         </label>
         <label class="container">Four
-          <input type="checkbox" v-model="working_days" value="saturday">
+          <input type="checkbox" v-model="working_days" :value="6">
           <span class="checkmark">Saturday</span>
         </label>
       </div>
@@ -93,11 +93,7 @@ export default {
   },
   mounted(){
     this.$store.commit('endLoading')
-    if(this.user.working_days){
-      this.working_days = this.user.working_days
-    }else{
-      this.working_days = []
-    }
+    
     
   }
 }

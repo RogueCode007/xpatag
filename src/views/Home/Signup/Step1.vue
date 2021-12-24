@@ -21,7 +21,7 @@
           <font-awesome-icon icon="eye" v-if="showEye" class="absolute cursor-pointer eye text-gray-500" @click="showPassword"/>
           <font-awesome-icon icon="eye-slash" v-else class="absolute cursor-pointer eye text-gray-500" @click="hidePassword"/>
         </div>
-        <p v-if="error.password" class="text-red-500 text-sm mt-2">Your password should contain at least 8 characters (at least one uppercase, one lowercase, one special character and one number)</p>
+        <p v-if="password.length > 0 && error.password" class="text-red-500 text-sm mt-2">Your password should contain at least 8 characters (at least one uppercase, one lowercase, one special character and one number)</p>
       </div>
       <button class="mt-10 outline-none py-2 w-full lg:w-4/5 lg:block lg:mx-auto text-white focus:outline-none" style="background-color: #52B95E; border-radius: 22px">Continue</button>
     </form>

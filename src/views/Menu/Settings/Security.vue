@@ -55,7 +55,7 @@
         </form>
         <hr class="mt-4">
       </div>
-      <div class="mt-4 lg:mt-6 cursor-pointer">
+      <!-- <div class="mt-4 lg:mt-6 cursor-pointer">
         <div @click="showSecurity = !showSecurity"  class="flex justify-between">
           <p class="text-black font-bold">Security Question</p>
           <svg v-if="!showSecurity" width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -84,7 +84,7 @@
          </div>
         </form>
         <hr class="mt-4">
-      </div>
+      </div> -->
       <div class="block mt-4 lg:mt-6 cursor-pointer" @click="logout">
         <div class="flex justify-between">
           <p class="text-red-500 font-bold">Log Out</p>

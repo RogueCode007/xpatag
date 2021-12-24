@@ -9,14 +9,14 @@
                     <input type="text" class="w-full focus:outline-none" placeholder="Search">
             </div>
       </div>
-      <div class="listbox">
-            <div v-for="(person, index) in list" :key="index" class="flex items-start mb-4 cursor-pointer py-4 px-2" :class="[person.name == selected.name ? 'active': '']"  @click="handleClick(person)">
+      <div class="listbox" v-if="list">
+            <div v-for="(person, index) in list" :key="index" class="flex items-start mb-4 cursor-pointer py-4 px-2" :class="[index == selectedIndex ? 'active': '']"  @click="handleClick(person, index)">
                 <div class="imgbox mr-2"></div>
                 <div class="w-full font-light text-gray-600">
                     <p>{{person.name}}</p>
                     <div class="text-xs flex justify-between mt-2 start">
-                        <p v-if="person.messages.length > 0">{{person.messages[person.messages.length - 1].msg | slicer}}</p>
-                        <p >{{person.time}}</p>
+                        <p>{{person.message | slicer}}</p>
+                        <p>{{person.timestamp}}</p>
                     </div>
                 </div>
             </div>
@@ -30,7 +30,8 @@ export default {
     props: ['list'],
     data(){
         return {
-            selected: {}
+            selected: {},
+            selectedIndex: 0
         }
     },
     filters:{
@@ -42,16 +43,25 @@ export default {
             }
         }
     },
+    watch:{
+        list(){
+            if(this.list.length > 0){
+                this.selected = this.list[0]
+                this.selectedIndex = 0
+                this.$emit('openChat', this.list[0])
+            }
+        }
+    },
     methods:{
-        handleClick(obj){
+        handleClick(obj, index){
             this.selected = obj
-            console.log(this.selected)
+            this.selectedIndex = index
+            // console.log(this.selected)
             this.$emit('openChat', obj)
         }
     },
     mounted(){
-        this.$emit('openChat', this.list[0])
-        this.selected = this.list[0]
+        
     }
 
 }
