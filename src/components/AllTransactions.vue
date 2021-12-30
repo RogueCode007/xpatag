@@ -1,6 +1,6 @@
 <template>
   <div class="overflow-x-auto lg:overflow-x-hidden tablecont">
-        <div class="" style="padding: 15px 8px">
+        <div v-if="paginatedTransactions.length > 0" class="" style="padding: 15px 8px">
           <div class="flex lg:items-center">
               <svg class="mr-3" width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12.8332 0.75H1.1665L5.83317 6.26833V10.0833L8.16651 11.25V6.26833L12.8332 0.75Z" stroke="#111111" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/>
@@ -14,9 +14,10 @@
                 <input type="text" class="w-full  rounded focus:outline-none focus:ring focus:ring-blue-200 outline-none py-2 px-6" placeholder="Search">
           </div>
         </div>
-    <table class="w-full mt-8 lg:mt-6">
+    <table v-if="paginatedTransactions.length > 0" class="w-full mt-8 lg:mt-6">
         <thead>
             <tr class="py-2">
+              <th class="font-semibold">S/N</th>
               <th class="font-semibold">DATE</th>
               <th class="font-semibold">REFERENCE</th>
               <th class="font-semibold">AMOUNT</th>
@@ -25,40 +26,36 @@
               <th class="font-semibold">ACTION</th>
             </tr>
         </thead>
-        <tbody v-if="transactions.length > 0">
-        <tr v-for="transaction in transactions" :key="transaction.id" class="">
+        <tbody >
+        <tr v-for="(transaction, index) in paginatedTransactions" :key="index" class="">
+            <td>{{index+1}}</td>
             <td class="">
-                {{transaction.date}}
+                {{transaction.timestamp | timeConverter}}
             </td>
             <td>
-            {{transaction.ref}}
+            {{transaction.reference}}
             </td>
             <td>{{transaction.amount}}</td>
             <td>
-            {{transaction.desc}}
+            {{transaction.description}}
             </td>
-            <td v-if="transaction.status == 'PENDING'">
-            <div class="rounded px-2 py-1 text-sm text-center" style="background-color: rgba(241, 186, 79, 0.1); color: #F1BA4F">
-                {{transaction.status}}
-            </div>
-            </td>
-            <td v-else-if="transaction.status == 'SUCCESSFUL'">
-            <div class="rounded px-2 py-1 text-sm text-center" style="background-color: rgba(82, 185, 94, 0.1); color: #52B95E">
-                {{transaction.status}}
-            </div>
+            <td v-if="transaction.status.id == 5">
+              <div class="rounded px-2 py-1 text-sm text-center" style="background-color: rgba(82, 185, 94, 0.1); color: #52B95E">
+                  {{transaction.status.name.toUpperCase()}}
+              </div>
             </td>
             <td v-else>
-            <div class="rounded px-2 py-1 text-sm text-center" style="background-color: rgba(235, 87, 87, 0.1); color: #EB5757">
-                DECLINED
-            </div>
+              <div class="rounded px-2 py-1 text-sm text-center" style="background-color: rgba(235, 87, 87, 0.1); color: #EB5757">
+                  {{transaction.status.name.toUpperCase()}}
+              </div>
             </td>
             <td>
             <button @click="showTransaction(transaction)" style="min-width:80px" class="text-sm text-green-500 rounded-3xl px-2 py-2 border border-solid border-green-500 bg-white">View</button>
             </td>
         </tr>
         </tbody>
-        <tbody v-else>
-        <div class="text-center py-4">
+        </table>
+        <div v-else class="text-center pt-24">
             <svg class="block w-full" width="62" height="59" viewBox="0 0 62 59" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M53.2168 21.8901V45.03C53.2168 45.7334 52.8316 46.3803 52.2127 46.7156L31.7234 57.8172C31.1532 58.1258 30.4655 58.1258 29.8969 57.8172L9.40591 46.7156C8.78873 46.3804 8.40332 45.7334 8.40332 45.03V21.8901H53.2168Z" fill="#A8E7EF"/>
             <path d="M53.2169 26.0537V33.9268L41.3775 40.3414C40.9075 40.5952 40.3545 40.6422 39.8486 40.4714L30.8101 37.4106V26.0537H53.2169Z" fill="#70D9E6"/>
@@ -77,43 +74,103 @@
             </svg>
             <p class="mt-4">No Transactions yet(#0)</p>
         </div>
-        </tbody>
-    </table>
+    <div v-if="paginatedTransactions.length > 0" class="my-8">
+    <t-pagination
+    :total-items="totalRows"
+    :per-page="perPage"
+    :limit="limit"
+    :disabled="disabled"
+    v-model="currentPage"
+    @change="changePage"
+  />
+  </div>
     <Single v-if="view" :transaction="transaction" v-on:close="view = false" />
 </div>
 </template>
 
 <script>
 import Single from "@/components/SingleTransaction"
+import TPagination from 'vue-tailwind/dist/t-pagination'
+import axios from 'axios'
+import baseURL from "@/main"
 export default {
     components:{
-        Single
+        Single, TPagination
     },
   data(){
     return {
       view: false,
       transaction: {},
-      transactions:[
-        {id: 1, date: '26th, June 2001', ref: '#R4938489EH', amount: '#50,000', desc: 'Service fee Withdrawal', status: 'SUCCESSFUL'},
-        {id: 2, date: '26th, June 2001', ref: '#R4938489EH', amount: '#50,000', desc: 'Service fee Withdrawal', status: 'SUCCESSFUL'},
-        {id: 3, date: '26th, June 2001', ref: '#R4938489EH', amount: '#50,000', desc: 'Service fee Withdrawal', status: 'PENDING'},
-        {id: 4, date: '26th, June 2001', ref: '#R4938489EH', amount: '#50,000', desc: 'Service fee Withdrawal', status: 'SUCCESSFUL'},
-        {id: 5, date: '26th, June 2001', ref: '#R4938489EH', amount: '#50,000', desc: 'Service fee Withdrawal', status: 'SUCCESSFUL'},
-        {id: 6, date: '26th, June 2001', ref: '#R4938489EH', amount: '#50,000', desc: 'Service fee Withdrawal', status: 'SUCCESSFUL'},
-        {id: 7, date: '26th, June 2001', ref: '#R4938489EH', amount: '#50,000', desc: 'Service fee Withdrawal', status: 'PENDING'},
-        {id: 8, date: '26th, June 2001', ref: '#R4938489EH', amount: '#50,000', desc: 'Service fee Withdrawal', status: 'SUCCESSFUL'},
-        {id: 9, date: '26th, June 2001', ref: '#R4938489EH', amount: '#50,000', desc: 'Service fee Withdrawal', status: 'SUCCESSFUL'},
-        {id: 10, date: '26th, June 2001', ref: '#R4938489EH', amount: '#50,000', desc: 'Service fee Withdrawal', status: 'SUCCESSFUL'},
-        {id: 11, date: '26th, June 2001', ref: '#R4938489EH', amount: '#50,000', desc: 'Service fee Withdrawal', status: 'FAILED'},
-        {id: 12, date: '26th, June 2001', ref: '#R4938489EH', amount: '#50,000', desc: 'Service fee Withdrawal', status: 'SUCCESSFUL'},
-     ],
+      transactions: [],
+      totalRows: 0,
+      perPage: 10,
+      pages: [],
+      page : 1,
+      disabled: false,
+      limit: 5,
+      currentPage: 1,
+    }
+  },
+  watch:{
+    transactions(){
+      this.setPages()
+    }
+  },
+  computed:{
+    paginatedTransactions(){
+      return this.paginate(this.transactions)
     }
   },
   methods: {
-      showTransaction(val){
-        this.transaction = val
-        this.view = true
-      },
+    showTransaction(val){
+      this.transaction = val
+      this.view = true
+    },
+    changePage(num){
+      this.currentPage = num
+      this.page = num
+    },
+    getAllTransactions(){
+      this.$store.commit('startLoading')
+      axios.get(`${baseURL}/transactions`)
+      .then((res)=>{
+        this.$store.commit('endLoading')
+        this.transactions = res.data.data
+        this.totalRows = res.data.data.length
+      })
+      .catch((err)=>{
+        this.$store.dispatch('handleError', err)
+      })
+    },
+    setPages () {
+      let numberOfPages = Math.ceil(this.transactions.length / this.perPage);
+      for (let index = 1; index <= numberOfPages; index++) {
+         this.pages.push(index);
+      }
+    },
+    paginate (transactions) {
+      let page = this.page;
+      let perPage = this.perPage;
+      let from = (page * perPage) - perPage;
+      let to = (page * perPage);
+      return  transactions.slice(from, to);
+    },
+  },
+  filters:{
+    timeConverter(val){
+      let words = val.split('-')
+      let slice = words[words.length - 1].slice(0, 2)
+      let newwords = []
+      newwords.push(words[0])
+      newwords.push(words[1])
+      newwords.push(slice)
+      let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      let num = parseInt(newwords[1]) - 1
+      return `${months[num]} ${newwords[newwords.length - 1]} ${newwords[0]}`;
+    }
+  },
+  mounted(){
+    this.getAllTransactions()
   }
 }
 
@@ -124,24 +181,27 @@ export default {
 th, td {
   text-align: left;
   padding: 8px;
-  min-width: 150px
+  /* min-width: 150px */
 }
 td:nth-child(1){
-  min-width: 180px
+  min-width: 50px
 }
 td:nth-child(2){
   min-width: 180px
 }
 td:nth-child(3){
-  min-width: 100px
+  min-width: 180px
 }
 td:nth-child(4){
-  min-width: 200px
-}
-td:nth-child(5){
   min-width: 100px
 }
+td:nth-child(5){
+  min-width: 200px
+}
 td:nth-child(6){
+  min-width: 100px
+}
+td:nth-child(7){
   min-width: 100px
 }
 thead tr{
@@ -184,22 +244,25 @@ table tr:nth-child(even){
 
 @media only screen and (min-width: 1024px) {
   td:nth-child(1){
-    width: 20%
+    width: 5%
   }
   td:nth-child(2){
     width: 20%
   }
   td:nth-child(3){
-    width: 10%
+    width: 20%
   }
   td:nth-child(4){
-    width: 30%
+    width: 20%
   }
   td:nth-child(5){
-    width: 10%
+    width: 20%
   }
   td:nth-child(6){
     width: 10%
+  }
+  td:nth-child(7){
+    width: 5%
   }
  .tablecont{
     min-height: 250px

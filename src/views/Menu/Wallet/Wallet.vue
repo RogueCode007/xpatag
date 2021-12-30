@@ -11,6 +11,7 @@
         <div class="border-b border-solid flex gap-10 lg:justify-start px-3">
           <router-link to="/app/dashboard/wallet/payment" class="text-gray-500 text-xs py-2 lg:text-base">Wallet Payments</router-link>
           <router-link to="/app/dashboard/wallet/transactions" class="lg:ml-5 py-2 text-gray-500 text-xs lg:text-base">Transactions</router-link>
+          <router-link to="/app/dashboard/wallet/accounts" class="lg:ml-5 py-2 text-gray-500 text-xs lg:text-base">Accounts</router-link>
         </div>
         <router-view></router-view>
       </div> 

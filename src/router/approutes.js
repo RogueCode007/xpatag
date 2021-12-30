@@ -155,6 +155,11 @@ export default [
                     name: 'Transactions',
                     component : () => import('../views/Menu/Wallet/Transactions')
                   },
+                  {
+                    path: '/app/dashboard/wallet/accounts',
+                    name: 'Accounts',
+                    component : () => import('../views/Menu/Wallet/AddedAccount')
+                  },
                 ]
               },
               {

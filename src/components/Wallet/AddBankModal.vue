@@ -37,7 +37,7 @@ export default {
             axios({url: `${baseURL}/bank/account`, data: {account_number: number}, method: 'POST'})
             .then((res)=>{
                 this.$store.commit('endLoading')
-                this.$store.commit('setSuccess', res.data.message)
+                this.$store.commit('setSuccess', {status: true, msg:res.data.message})
                 this.$emit('close')
             })
             .catch((err)=>{

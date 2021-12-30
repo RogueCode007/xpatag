@@ -28,44 +28,31 @@
             <td>{{index + 1}}</td>
               <td class="text-sm font-bold">
                 {{booking.expert.firstname}} {{booking.expert.lastname}}
-              <!-- <div class="flex items-center">
-                  <div class="mr-3 imgcont">
-                  <img :src="placeholder" alt="" class="w-full" style="border-radius: 50%; height: 100%">
-                  </div>
-                  <div class="flex flex-col justify-between">
-                  <p class="text-sm font-bold">{{booking.name}}</p>
-                  <p class="text-sm">{{booking.time}}</p>
-                  </div>
-              </div> -->
               </td>
               <td class="text-sm underline font-bold">
                 {{booking.service.name}}
-              <!-- <div class="flex flex-col justify-between">
-                  <p class="text-sm underline font-bold">{{booking.service}}</p>
-                  <p class="text-sm">{{booking.date}}</p>
-              </div> -->
               </td>
               <td>{{booking.amount}}</td>
               <td>
                 <button @click="showTimeline(booking)" style="min-width:80px" class="text-sm text-green-500 rounded-3xl px-2 py-2 border border-solid border-green-500 bg-white">View</button>
               </td>
-              <!-- <td v-if="booking.status.name == 'active'">
-              <div class="rounded px-2 py-1 text-sm" style="background-color: rgba(241, 186, 79, 0.1); color: #F1BA4F">
-                  ACTIVE
-              </div>
-              </td> -->
-              <td v-if="booking.status.name == 'active'">
-              <div class="rounded px-2 py-1 text-sm" style="background-color: rgba(82, 185, 94, 0.1); color: #52B95E">
-                  ACTIVE
-              </div>
+              <td v-if="booking.status.id == 1">
+                <div class="rounded px-2 py-1 text-sm" style="background-color: rgba(241, 186, 79, 0.1); color: #F1BA4F">
+                    {{booking.status.name.toUpperCase()}}
+                </div>
               </td>
-              <td v-else>
-              <div class="rounded px-2 py-1 text-sm" style="background-color: rgba(235, 87, 87, 0.1); color: #EB5757">
-                  {{booking.status.name}}
-              </div>
+              <td v-else-if="booking.status.id == 8">
+                <div class="rounded px-2 py-1 text-sm" style="background-color: rgba(235, 87, 87, 0.1); color: #EB5757">
+                    {{booking.status.name.toUpperCase()}}
+                </div>
+              </td>
+              <td v-else-if="booking.status.id == 18">
+                <div class="rounded px-2 py-1 text-sm" style="background-color: rgba(82, 185, 94, 0.1); color: #52B95E">
+                    {{booking.status.name.toUpperCase()}}
+                </div>
               </td>
               <td>
-              <button @click="showBooking(booking)" style="min-width:80px" class="text-sm text-green-500 rounded-3xl px-2 py-2 border border-solid border-green-500 bg-white">View</button>
+                <button @click="showBooking(booking)" style="min-width:80px" class="text-sm text-green-500 rounded-3xl px-2 py-2 border border-solid border-green-500 bg-white">View</button>
               </td>
           </tr>
           </tbody>
@@ -165,8 +152,15 @@ export default {
       this.view = true
     },
     showTimeline(val){
-      this.booking = val
-      this.timeline = true
+      // this.booking = val
+      axios.get(`${baseURL}/booking/${val.booking_id}`)
+      .then((res)=>{
+        this.booking = res.data.data
+        this.timeline = true
+      })
+      .catch((err)=>{
+        this.$store.dispatch('handleError', err)
+      })
     },
     changePage(num){
       this.currentPage = num
@@ -178,10 +172,16 @@ export default {
       .then((res)=>{
         this.$store.commit('endLoading')
         this.bookings = res.data.data.bookings
+        console.log(this.bookings)
         this.totalRows = res.data.data.bookings.length
       })
       .catch((err)=>{
-        this.$store.dispatch('handleError', err)
+        if(err.response.data.message == 'no record found'){
+          this.$store.commit('endLoading')
+          this.bookings = []
+        }else{
+          this.$store.dispatch('handleError', err)
+        }
       })
     },
     getPendingBookings(){
@@ -189,17 +189,22 @@ export default {
       axios.get(`${baseURL}/bookings/filter/8`)
       .then((res)=>{
         this.$store.commit('endLoading')
-        this.bookings = res.data.data.
+        this.bookings = res.data.data.bookings
         this.totalRows = res.data.data.bookings.length
         // console.log(this.bookings)
       })
       .catch((err)=>{
-        this.$store.dispatch('handleError', err)
+        if(err.response.data.message == 'no record found'){
+          this.$store.commit('endLoading')
+          this.bookings = []
+        }else{
+          this.$store.dispatch('handleError', err)
+        }
       })
     },
     getActiveBookings(){
       this.$store.commit('startLoading')
-      axios.get(`${baseURL}/bookings/filters/1`)
+      axios.get(`${baseURL}/bookings/filter/1`)
       .then((res)=>{
         this.$store.commit('endLoading')
         this.bookings = res.data.data.bookings
@@ -207,7 +212,12 @@ export default {
         // console.log(this.bookings)
       })
       .catch((err)=>{
-        this.$store.dispatch('handleError', err)
+        if(err.response.data.message == 'no record found'){
+          this.$store.commit('endLoading')
+          this.bookings = []
+        }else{
+          this.$store.dispatch('handleError', err)
+        }
       })
     },
     getCompletedBookings(){
@@ -220,7 +230,12 @@ export default {
         // console.log(this.bookings)
       })
       .catch((err)=>{
-        this.$store.dispatch('handleError', err)
+        if(err.response.data.message == 'no record found'){
+          this.$store.commit('endLoading')
+          this.bookings = []
+        }else{
+          this.$store.dispatch('handleError', err)
+        }
       })
     },
     setPages () {
