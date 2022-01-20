@@ -76,7 +76,7 @@ export default {
     submit(){
       this.$store.commit('startLoading')
       this.user.working_days = this.working_days
-      console.log(this.user)
+      // console.log(this.user)
       axios({url: `${baseURL}/signup/expert`, data: this.user, method: 'POST'})
       .then(res=>{
         console.log(res)
@@ -93,8 +93,6 @@ export default {
   },
   mounted(){
     this.$store.commit('endLoading')
-    
-    
   }
 }
 </script>

@@ -132,7 +132,12 @@ export default new Vuex.Store({
       })
     },
     handleError({commit, dispatch}, err){
-      console.log(err.response.data.message)
+      // console.log(err.response.data.message)
+      if(!err.response){
+        commit('endLoading')
+        commit('setError', {status: true, msg: "An error occured"})
+        return
+      }
       if(err.response.data.message == "Invalid or expired JWT"){
         commit('setError', {status: true, msg: 'Session expired'})
         commit('endLoading')

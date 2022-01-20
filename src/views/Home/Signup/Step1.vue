@@ -83,11 +83,13 @@ export default {
     }
   },
   mounted(){
-    console.log(this.user)
-    this.firstname = this.user.firstname
+    this.$store.commit('endLoading')
+    if(this.user.firstname){
+      this.firstname = this.user.firstname
       this.lastname =  this.user.lastname
       this.email = this.user.email
       this.password = this.user.password
+    }
   }
 }
 </script>

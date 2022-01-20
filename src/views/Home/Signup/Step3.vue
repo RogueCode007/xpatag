@@ -119,10 +119,11 @@ export default {
   },
   mounted(){
     this.$store.commit('startLoading')
-    console.log(this.user)
-    this.profession = this.user.profession
-    this.experience = this.user.experience
-    this.sub_category_id = this.user.sub_category_id
+    if(this.user.profession){
+      this.profession = this.user.profession
+      this.experience = this.user.experience
+      this.sub_category_id = this.user.sub_category_id
+    }
     axios.get(`${baseURL}/category`)
     .then(res=>{
       this.$store.commit('endLoading')

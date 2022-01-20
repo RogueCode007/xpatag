@@ -136,12 +136,12 @@ export default {
   },
   mounted(){
     this.$store.commit('startLoading')
-    console.log(this.user)
-    this.phone = this.user.phone
-    this.city = this.user.city
-    this.address = this.user.address
-    // this.placeholder = this.user.image
-    this.state_id = this.user.state_id
+    if(this.user.phone){
+      this.phone = this.user.phone
+      this.city = this.user.city
+      this.address = this.user.address
+      this.state_id = this.user.state_id
+    }
     axios.get(`${baseURL}/state`)
     .then(res=>{
       this.$store.commit('endLoading')
