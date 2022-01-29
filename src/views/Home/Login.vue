@@ -83,6 +83,9 @@ export default {
         }
       })
     },
+  },
+  mounted(){
+    this.$store.commit('endLoading')
   }
 }
 </script>

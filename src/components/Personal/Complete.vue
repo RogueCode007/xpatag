@@ -27,7 +27,7 @@
            <h3 class="text-base text-black">Address</h3>
            <p class="mt-4 lg:mt-0 text-base text-gray-500">{{profile.address}}</p>
        </div> 
-       <div class="py-4 border-b border-solid lg:flex lg:justify-between lg:gap-16">
+       <div v-if="profile.portfolio" class="py-4 border-b border-solid lg:flex lg:justify-between lg:gap-16">
            <h3 class="text-xl text-black">Bio</h3>
            <p class="mt-4 lg:mt-0 text-base text-gray-500">{{profile.portfolio[profile.portfolio.length - 1].description}}</p>
        </div> 
