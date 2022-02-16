@@ -11,7 +11,7 @@
                     <p>BRONZE</p>    
                 </div>
                 <div>
-                    <textarea v-model="bronze_description" class="w-full p-3 focus:outline-none" placeholder="Describe the details for package, seperate each package feature by a comma" required></textarea>
+                    <textarea v-model="bronze_description" class="w-full p-3 focus:outline-none" placeholder="Describe the details for package" required></textarea>
                 </div>
                 <div class="p-3 border-t border-solid">
                     <p class="text-sm text-gray-500">PRICE RANGE</p>
@@ -30,7 +30,7 @@
                     <p>SILVER</p>    
                 </div>
                 <div>
-                    <textarea v-model="silver_description" required class="w-full p-3 focus:outline-none" placeholder="Describe the details for package, seperate each package feature by a comma"></textarea>
+                    <textarea v-model="silver_description" required class="w-full p-3 focus:outline-none" placeholder="Describe the details for package"></textarea>
                 </div>
                 <div class="p-3 border-t border-solid">
                     <label class="text-sm text-gray-500">PRICE RANGE</label>
@@ -49,7 +49,7 @@
                     <p>GOLD</p>    
                 </div>
                 <div>
-                    <textarea v-model="gold_description" required class="w-full p-3 focus:outline-none" placeholder="Describe the details for package, seperate each package feature by a comma"></textarea>
+                    <textarea v-model="gold_description" required class="w-full p-3 focus:outline-none" placeholder="Describe the details for package"></textarea>
                 </div>
                 <div class="p-3 border-t border-solid">
                     <label class="text-sm text-gray-500">PRICE RANGE</label>
@@ -130,7 +130,7 @@ export default {
                 name: this.newService.name,
                 image: this.newService.image,
                 service_description : this.newService.service_description,
-                sub_category_id : this.newService.sub_category_id
+                profile_id : this.newService.profile_id
             }
             axios({url: `${baseURL}/service`, data: obj, method: 'POST'})
             .then(res=>{

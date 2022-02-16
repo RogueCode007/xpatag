@@ -47,7 +47,7 @@ export default new Vuex.Store({
     },
     setNewUser(state, obj){
       state.newUser = {...state.newUser, ...obj}
-      console.log(state.newUser)
+      // console.log(state.newUser)
     },
     setActiveModal(state, val){
       state.activeModal = val
@@ -89,7 +89,7 @@ export default new Vuex.Store({
     registerUser({commit}, user){
       return new Promise((resolve, reject)=> {
         commit('startLoading')
-        axios({url: `${baseURL}/signup`, data: user, method: 'POST'})
+        axios({url: `${baseURL}/signup/expert`, data: user, method: 'POST'})
         .then((res)=> {
           commit('endLoading')
           resolve(res)

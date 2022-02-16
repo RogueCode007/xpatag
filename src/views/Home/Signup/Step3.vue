@@ -2,7 +2,7 @@
   <div class="mt-4">
     <div class="relative">
       <h1 class="font-bold text-2xl text-center">Professional Information</h1>
-      <router-link to="/signup/2" class="absolute flex items-center link left-0 text-green-500">
+      <router-link to="/signup/expert/step2" class="absolute flex items-center link left-0 text-green-500">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C21.9939 17.5203 17.5203 21.9939 12 22ZM12 4C7.6054 4.00111 4.03446 7.54686 4.00224 11.9413C3.97002 16.3358 7.48858 19.9336 11.8827 19.9991C16.2768 20.0647 19.9011 16.5735 20 12.18V13.963V12C19.995 7.58378 16.4162 4.00496 12 4ZM12 17L7 12L12 7L13.41 8.41L10.83 11H17V13H10.83L13.41 15.59L12 17Z" fill="#10B981"></path>
         </svg>
@@ -20,15 +20,6 @@
           <label class="text-sm text-gray-400">Years of Experience</label>
           <input v-model="experience" type="text" class="mt-2 bg-white w-full py-2 px-3 rounded outline-none border focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent" placeholder="3" required>
         </div>
-      </div>
-      <div class="mt-4">
-        <label class="text-sm text-gray-400">Area of expertise/sub-category</label>
-        <select v-model="sub_category_id" class="mt-2 bg-white w-full py-2 px-3 rounded outline-none border focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent" required>
-          <option value="" selected disabled>Select an area of expertise</option>
-          <optgroup v-for="(category,index) in categories" :key="index" :label="category.name">
-            <option v-for="(sub,index) in category.sub_category" :key="index" :value="sub.sub_category_id">{{sub.name}}</option>
-          </optgroup>
-        </select>
       </div>
       <!-- <div class="mt-4">
         <label class="text-sm text-gray-400">Average number of days</label>
@@ -63,17 +54,14 @@
 </template>
 
 <script>
-import axios from "axios"
-import baseURL from "@/main"
+// import axios from "axios"
+// import baseURL from "@/main"
 import {mapState} from 'vuex'
 export default {
   data(){
     return {
       profession: '',
       experience: '',
-      sub_category_id: '',
-      categories: [],
-      file_name: '',
       error: {
         result: false
       }
@@ -102,14 +90,23 @@ export default {
         return
       }else{
         const data = {
-          sub_category_id : this.sub_category_id,
           profession : this.profession,
           experience : parseInt(this.experience)
         }
         this.$store.commit('setNewUser', data)
-        this.$router.push('/signup/4')
-        this.$store.commit('increaseSignup', {val: 60})
+        console.log(this.user)
+        this.register()
       }
+    },
+    register(){
+      this.$store.dispatch('registerUser', this.user)
+      .then(()=> {
+        this.$store.commit('increaseSignup', {val: 75})
+        this.$router.push('/signup/verifyotp')
+      })
+      .catch((err)=> {
+        this.$store.commit('setError', {status: true, msg: err.data.message})
+      })
     },
     resultUpload(){
       console.log(this.$refs.result.files[0])
@@ -118,21 +115,20 @@ export default {
     }
   },
   mounted(){
-    this.$store.commit('startLoading')
+    // this.$store.commit('startLoading')
     if(this.user.profession){
       this.profession = this.user.profession
       this.experience = this.user.experience
-      this.sub_category_id = this.user.sub_category_id
     }
-    axios.get(`${baseURL}/category`)
-    .then(res=>{
-      this.$store.commit('endLoading')
-      this.categories = res.data.data
-      console.log(this.categories)
-    })
-    .catch(err=>{
-      this.$store.dispatch('handleError', err)
-    })
+    // axios.get(`${baseURL}/category`)
+    // .then(res=>{
+    //   this.$store.commit('endLoading')
+    //   this.categories = res.data.data
+    //   console.log(this.categories)
+    // })
+    // .catch(err=>{
+    //   this.$store.dispatch('handleError', err)
+    // })
   }
 }
 </script>

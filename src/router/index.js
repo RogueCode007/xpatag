@@ -29,25 +29,25 @@ const baseRoutes = [
       {
         path: '/signup',
         name: 'Signup',
-        redirect: '/signup/1',
+        redirect: '/signup/expert/step1',
         component: () => import('../views/Home/Signup/Signup'),
         children: [
           {
-            path: '/signup/1',
+            path: '/signup/expert/step1',
             component: () => import('../views/Home/Signup/Step1')
           },
           {
-            path: '/signup/2',
+            path: '/signup/expert/step2',
             component: () => import('../views/Home/Signup/Step2')
           },
           {
-            path: '/signup/3',
+            path: '/signup/expert/step3',
             component: () => import('../views/Home/Signup/Step3')
           },
-          {
-            path: '/signup/4',
-            component: () => import('../views/Home/Signup/Step4')
-          },
+          // {
+          //   path: '/signup/4',
+          //   component: () => import('../views/Home/Signup/Step4')
+          // },
           {
             path: '/signup/verifyotp',
             component: () => import('../views/Home/Signup/Verify')

@@ -113,22 +113,18 @@ export default [
                     name: 'Professional',
                     component : ()=> import('../views/Menu/Profile/Professional')
                   },
-                  {
-                    path: '/app/dashboard/profile/ratings',
-                    name: 'Ratings',
-                    component : ()=> import('../views/Menu/Profile/Ratings')
-                  },
+                  // {
+                  //   path: '/app/dashboard/profile/ratings',
+                  //   name: 'Ratings',
+                  //   component : ()=> import('../views/Menu/Profile/Ratings')
+                  // },
                 ]
               },
               {
                 path: '/app/dashboard/profile/update',
-                redirect: '/app/dashboard/profile/update/personal',
+                redirect: '/app/dashboard/profile/update/professional',
                 component : () => import('../views/Menu/Profile/Update/Profile'),
                 children : [
-                  {
-                    path: '/app/dashboard/profile/update/personal',
-                    component : ()=> import('../views/Menu/Profile/Update/Personal')
-                  },
                   {
                     path: '/app/dashboard/profile/update/professional',
                     component : ()=> import('../views/Menu/Profile/Update/Professional')
@@ -138,6 +134,21 @@ export default [
                   //   name: 'Ratings',
                   //   component : ()=> import('../views/Menu/Profile/Ratings')
                   // },
+                ]
+              },
+              {
+                path: '/app/dashboard/profile/add',
+                component : () => import('../views/Menu/Profile/Create/Create'),
+                redirect: '/app/dashboard/profile/add/1',
+                children : [
+                  {
+                    path: '/app/dashboard/profile/add/1',
+                    component: () => import('../views/Menu/Profile/Create/Create1')
+                  },
+                  {
+                    path: '/app/dashboard/profile/add/2',
+                    component: () => import('../views/Menu/Profile/Create/Create2')
+                  },
                 ]
               },
               {

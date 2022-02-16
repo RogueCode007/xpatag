@@ -4,18 +4,15 @@
       <h1 class="text-black font-bold text-2xl">Service Information</h1>
       <p class="text-gray-500 mt-4">Please let's know your various professions and services</p>
     </div>
-    <form @submit.prevent="checkImage" class="mt-8 lg:w-full">
+    <form @submit.prevent="validate" class="mt-8 lg:w-full">
       <div class="form__div">
         <input type="text" class="form__input" placeholder=" " v-model="name" required>
         <label class="text-gray-500 text-xs form__label">Service Title</label>
       </div>
       <div class="mt-4">
-        <label class="text-sm text-gray-400">Service Category</label>
-        <select v-model="sub_category_id" class="mt-2 bg-white w-full py-2 px-3 rounded outline-none border focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent" required>
-          <option value="" selected disabled>Select a category</option>
-          <optgroup v-for="(category,index) in categories" :key="index" :label="category.name">
-            <option v-for="(sub,index) in category.sub_category" :key="index" :value="sub.sub_category_id">{{sub.name}}</option>
-          </optgroup>
+        <label class="text-sm text-gray-400">Select Profile</label>
+        <select v-model="profile_id" class="mt-2 bg-white w-full py-2 px-3 rounded outline-none border focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent" required>
+            <option v-for="(profile,index) in profiles" :key="index" :value="profile.profile_id">{{profile.profession}}</option>
         </select>
       </div>
       <div class="mt-4 py-6" style="border: 1px solid #ECECEC;border-radius: .5rem;">
@@ -43,11 +40,14 @@
 </template>
 
 <script>
+import axios from 'axios'
+import baseURL from "@/main"
 import {mapState} from "vuex"
 export default {
   data(){
     return {
-      sub_category_id : '',
+      profiles: [],
+      profile_id : '',
       name: '',
       image: '',
       imageName: '',
@@ -59,19 +59,19 @@ export default {
   },
   computed:{
     ...mapState({
-      categories : state => state.categories
+      userId: state => state.user.user_id,
     })
   },
   methods:{
-     checkImage(){
-      //check if a file has been uploaded and if the file up;oaded is an image file
-      if(this.$refs.img.files[0] && (this.$refs.img.files[0].type == "image/png" || this.$refs.img.files[0].type == "image/jpeg")){
-        this.error.image = false
-        this.validate()
-      }else{
-        this.error.image = true
-      }
-    },
+    //  checkImage(){
+    //   //check if a file has been uploaded and if the file up;oaded is an image file
+    //   if(this.$refs.img.files[0] && (this.$refs.img.files[0].type == "image/png" || this.$refs.img.files[0].type == "image/jpeg")){
+    //     this.error.image = false
+    //     this.validate()
+    //   }else{
+    //     this.error.image = true
+    //   }
+    // },
     imageUpload(){
       if(this.$refs.img.files[0].type == "image/png" || this.$refs.img.files[0].type == "image/jpeg"){
         this.error.image = false
@@ -94,7 +94,7 @@ export default {
       }else{
         const obj = {
           image: this.image,
-          sub_category_id : this.sub_category_id,
+          profile_id : this.profile_id,
           name: this.name,
           service_description: this.service_description,
         }
@@ -103,9 +103,18 @@ export default {
         
       }
     },
+    getProfiles(){
+      axios.get(`${baseURL}/expert/profile/${this.userId}`)
+      .then((res)=>{
+        this.profiles = res.data.data
+      })
+      .catch((err)=>{
+        this.$store.dispatch('handleError', err)
+      })
+    }
   },
   mounted(){
-    
+    this.getProfiles()
   }
 }
 </script>

@@ -144,15 +144,15 @@ export default {
         }
     },
     mounted(){
-        this.bronze_description = this.service.packages.bronze_description
-        this.silver_description = this.service.packages.silver_description
-        this.gold_description = this.service.packages.gold_description
-        this.bronze_lower_bound = this.service.packages.bronze_range.split(' - ')[0].slice(0, this.service.packages.bronze_range.split(' - ')[0].length - 2)
-        this.bronze_upper_bound = this.service.packages.bronze_range.split(' - ')[1].slice(0, this.service.packages.bronze_range.split(' - ')[1].length - 2)
-        this.silver_lower_bound = this.service.packages.silver_range.split(' - ')[0].slice(0, this.service.packages.silver_range.split(' - ')[0].length - 2)
-        this.silver_upper_bound = this.service.packages.silver_range.split(' - ')[1].slice(0, this.service.packages.silver_range.split(' - ')[1].length - 2)
-        this.gold_lower_bound = this.service.packages.gold_range.split(' - ')[0].slice(0, this.service.packages.gold_range.split(' - ')[0].length - 2)
-        this.gold_upper_bound = this.service.packages.gold_range.split(' - ')[1].slice(0, this.service.packages.gold_range.split(' - ')[1].length - 2)
+        this.bronze_description = this.service.packages[0].description
+        this.silver_description = this.service.packages[1].description
+        this.gold_description = this.service.packages[2].description
+        this.bronze_lower_bound = this.service.packages[0].range.split(' - ')[0].slice(0, this.service.packages[0].range.split(' - ')[0].length - 2)
+        this.bronze_upper_bound = this.service.packages[0].range.split(' - ')[1].slice(0, this.service.packages[0].range.split(' - ')[1].length - 2)
+        this.silver_lower_bound = this.service.packages[1].range.split(' - ')[0].slice(0, this.service.packages[1].range.split(' - ')[0].length - 2)
+        this.silver_upper_bound = this.service.packages[1].range.split(' - ')[1].slice(0, this.service.packages[1].range.split(' - ')[1].length - 2)
+        this.gold_lower_bound = this.service.packages[2].range.split(' - ')[0].slice(0, this.service.packages[2].range.split(' - ')[0].length - 2)
+        this.gold_upper_bound = this.service.packages[2].range.split(' - ')[1].slice(0, this.service.packages[2].range.split(' - ')[1].length - 2)
     }
 }
 </script>

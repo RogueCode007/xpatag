@@ -1,154 +1,113 @@
 <template>
-  <div class="py-8 lg:py-10 px-3 lg:px-6">  
-    <div class=" infobox">
-       <div class="py-4 border-b border-solid lg:flex justify-between">
-           <h3 class="text-base text-black">Profession</h3>
-           <p class="mt-4 lg:mt-0 text-base  text-gray-500">{{profile.profession}}</p>
-       </div> 
-       <div class="py-4 border-b border-solid lg:flex justify-between">
-           <h3 class="text-base text-black">Area of Expertise</h3>
-           <p v-if="profile.category" class="mt-4 lg:mt-0 text-base text-gray-500">{{profile.category.name}}</p>
-       </div> 
-       <!-- <div class="py-4 border-b border-solid justify-between">
-           <h3 class="text-base  text-black">Skills</h3>
-           <div class="mt-4 flex skillbox">
-               <div v-for="skill in skills" :key="skill.id" class="border border-solid rounded p-2 text-sm skill">{{skill}}</div>
-           </div>
-       </div>   -->
-       <div class="py-4 border-b border-solid ">
-           <h3 class="text-base text-black">Education</h3>
-           <div v-if="profile.education">
-                <p class="mt-4 font-normal text-sm text-gray-500">{{profile.education[profile.education.length - 1].degree}}</p>
-                <div class="lg:flex mt-2 justify-between">
-                    <p class="text-sm" style="color: #b7b7b7">{{profile.education[profile.education.length - 1].school}}</p>
-                    <p class="mt-2 lg:mt-0 text-sm" style="color: #b7b7b7">{{profile.education[profile.education.length - 1].year}}</p>
-                </div>
-           </div>
-       </div> 
-       <div class="py-4 border-b border-solid ">
-           <h3 class="text-base text-black">Award</h3>
-           <div v-if="profile.award"> 
-                <p class="mt-4 font-normal text-sm text-gray-500">{{profile.award[profile.award.length - 1].title}}</p>
-                <div class="lg:flex mt-2 justify-between">
-                    <p class="text-sm" style="color: #b7b7b7">{{profile.award[profile.award.length - 1].institute}}</p>
-                    <p class="mt-2 lg:mt-0 text-sm" style="color: #b7b7b7">{{profile.award[profile.award.length - 1].year}}</p>
-                </div>
-           </div>
-       </div> 
-       <div class="py-4 border-b border-solid ">
-           <h3 class="text-base text-black">Certification</h3>
-           <div v-if="profile.certificate">
-                <div class="lg:flex lg:justify-between lg:items-center mt-2">
-                    <div class="flex">
-                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g clip-path="url(#clip0)">
-                            <path d="M12.7992 1.82812H5.48543C5.0005 1.82813 4.53542 2.02076 4.19252 2.36366C3.84962 2.70657 3.65698 3.17164 3.65698 3.65657V18.2842C3.65698 18.7691 3.84962 19.2342 4.19252 19.5771C4.53542 19.92 5.0005 20.1126 5.48543 20.1126H16.4561C16.941 20.1126 17.4061 19.92 17.749 19.5771C18.0919 19.2342 18.2846 18.7691 18.2846 18.2842V7.31347L12.7992 1.82812Z" stroke="#111111" stroke-width="1.82845" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M12.7991 1.82812V7.31347H18.2844" stroke="#111111" stroke-width="1.82845" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M14.6275 11.8848H7.31372" stroke="#111111" stroke-width="1.82845" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M14.6275 15.542H7.31372" stroke="#111111" stroke-width="1.82845" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M9.14217 8.22754H8.22794H7.31372" stroke="#111111" stroke-width="1.82845" stroke-linecap="round" stroke-linejoin="round"/>
-                            </g>
-                            <defs>
-                            <clipPath id="clip0">
-                            <rect width="21.9414" height="21.9414" fill="white"/>
-                            </clipPath>
-                            </defs>
-                        </svg>
-                        <div class="ml-2">
-                            <p class=" text-sm text-gray-500">{{profile.certificate[profile.certificate.length - 1].issued_by}}</p>
-                            <p class="mt-2 text-sm" style="color: #b7b7b7">{{profile.certificate[profile.certificate.length - 1].year}}</p>
+  <div class="py-8 lg:py-10 px-3 lg:px-6"> 
+      <div class="flex justify-between items-center">
+      <h1 class="text-black font-bold text-2xl lg:text-3xl">Profiles</h1>
+      <router-link to="/app/dashboard/profile/add" class="mt-4 lg:mt-0 p-2 border text-center border-solid text-sm" style="border-radius: 22px; color: #52B95E; border-color: #52B95E">Add Profile</router-link>
+    </div> 
+    <div v-if="!$store.state.loading && profiles.length == 0" class="py-24 flex items-center justify-center">
+        <p>You have no profiles yet, go ahead and add one</p>
+    </div>
+    <div v-else class="tablecont overflow-x-auto mt-8">
+       <table class="w-full">
+           <thead>
+               <tr>
+                   <th class="text-gray-300 text-sm">S/N</th>
+                   <th class="text-gray-300 text-sm">Category</th>
+                   <th class="text-gray-300 text-sm">Subcategory</th>
+                   <th class="text-gray-300 text-sm">Profession</th>
+                   <th class="text-gray-300 text-sm">Action</th>
+               </tr>
+           </thead>
+           <tbody>
+               <tr v-for="(profile, index) in profiles" :key="index">
+                    <td class="text-gray-500 text-sm">{{index + 1}}</td> 
+                    <td class="text-gray-500 text-sm">{{profile.category.name}}</td> 
+                    <td class="text-gray-500 text-sm">{{profile["sub-category"].name}}</td> 
+                    <td class="text-gray-500 text-sm">{{profile.profession}}</td> 
+                    <td class="">
+                        <div class="flex gap-2 items-center">
+                            <button >
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M12 19C10.3599 19.0204 8.7367 18.6664 7.254 17.965C6.10469 17.4042 5.07265 16.6297 4.213 15.683C3.30243 14.7041 2.58547 13.5616 2.1 12.316L2 12L2.105 11.684C2.59082 10.4394 3.30624 9.29725 4.214 8.31698C5.07334 7.37029 6.10504 6.59584 7.254 6.03498C8.73671 5.33357 10.3599 4.97959 12 4.99998C13.6401 4.97963 15.2633 5.3336 16.746 6.03498C17.8953 6.59571 18.9274 7.37017 19.787 8.31698C20.6993 9.29453 21.4165 10.4373 21.9 11.684L22 12L21.895 12.316C20.3262 16.3998 16.3742 19.0693 12 19ZM12 6.99998C8.59587 6.89331 5.47142 8.87507 4.117 12C5.4712 15.1251 8.59579 17.1069 12 17C15.4041 17.1064 18.5284 15.1247 19.883 12C18.5304 8.87356 15.4047 6.89106 12 6.99998ZM12 15C10.5573 15.0095 9.30937 13.9973 9.02097 12.5838C8.73256 11.1702 9.48427 9.75 10.8154 9.19364C12.1465 8.63728 13.6852 9.10011 14.4885 10.2985C15.2919 11.4969 15.1354 13.0961 14.115 14.116C13.5563 14.6812 12.7948 14.9995 12 15Z" fill="#2E3A59"></path>
+                                </svg>
+                            </button>
+                            <button>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M17 22H7C5.89543 22 5 21.1046 5 20V7H3V5H7V4C7 2.89543 7.89543 2 9 2H15C16.1046 2 17 2.89543 17 4V5H21V7H19V20C19 21.1046 18.1046 22 17 22ZM7 7V20H17V7H7ZM9 4V5H15V4H9ZM15 18H13V9H15V18ZM11 18H9V9H11V18Z" fill="#ff0000"></path>
+                                </svg>
+                            </button>
                         </div>
-                    </div>
-                    <a :href="profile.certificate[profile.certificate.length - 1].link" target="_blank" rel="noopener noreferrer" class=" block mt-2 lg:mt-0 text-sm text-green-500">View</a>
-                </div>
-           </div>
-       </div> 
-       <!-- <div class="py-4 border-b border-solid ">
-           <h3 class="text-base text-black">Portfolio</h3>
-           <div v-if="profile.portfolio">
-                <div class="lg:flex lg:justify-between lg:items-center mt-2">
-                    <div class="flex">
-                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g clip-path="url(#clip0)">
-                            <path d="M12.7992 1.82812H5.48543C5.0005 1.82813 4.53542 2.02076 4.19252 2.36366C3.84962 2.70657 3.65698 3.17164 3.65698 3.65657V18.2842C3.65698 18.7691 3.84962 19.2342 4.19252 19.5771C4.53542 19.92 5.0005 20.1126 5.48543 20.1126H16.4561C16.941 20.1126 17.4061 19.92 17.749 19.5771C18.0919 19.2342 18.2846 18.7691 18.2846 18.2842V7.31347L12.7992 1.82812Z" stroke="#111111" stroke-width="1.82845" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M12.7991 1.82812V7.31347H18.2844" stroke="#111111" stroke-width="1.82845" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M14.6275 11.8848H7.31372" stroke="#111111" stroke-width="1.82845" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M14.6275 15.542H7.31372" stroke="#111111" stroke-width="1.82845" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M9.14217 8.22754H8.22794H7.31372" stroke="#111111" stroke-width="1.82845" stroke-linecap="round" stroke-linejoin="round"/>
-                            </g>
-                            <defs>
-                            <clipPath id="clip0">
-                            <rect width="21.9414" height="21.9414" fill="white"/>
-                            </clipPath>
-                            </defs>
-                        </svg>
-                        <div class="ml-2">
-                            <p class=" text-sm text-gray-500">My Portfolio</p>
-                            <p class="mt-2 text-sm" style="color: #b7b7b7">2021</p>
-                        </div>
-                    </div>
-                    <a :href="profile.portfolio[0].file" target="_blank" rel="noopener noreferrer" class=" block mt-2 lg:mt-0 text-sm text-green-500">View</a>
-                    <a >View</a>
-                </div>
-           </div>
-       </div>  -->
+                    </td> 
+               </tr>
+           </tbody>
+       </table>
     </div>
   </div>
 </template>
 
 <script>
 import placeholder from "@/assets/img/Signup/person.png"
-// import axios from 'axios'
-// import baseURL from "@/main"
+import axios from 'axios'
+import baseURL from "@/main"
 import {mapState} from 'vuex'
 export default {
     data(){
         return {
             placeholder: placeholder,
-            skills: ['Time Management', 'Unethical Hacking', 'Social Engineering', 'Crypto']
+            profiles: [],
         }
     },
     computed:{
         ...mapState({
             userId: state => state.user.user_id,
-            profile : state => state.profile.professionalProfile
         })
     },
-    // methods:{
-    //     getProfile(){
-    //         this.$store.commit('startLoading')
-    //         axios.get(`${baseURL}/expert/profile/${this.userId}`)
-    //         .then((res)=>{
-    //             this.$store.commit('setProfessionalProfile', res.data.data.profile)
-    //             this.$store.commit('endLoading')
-    //         })
-    //         .catch((err)=>{
-    //             this.$store.dispatch('handleError', err)
-    //         })
-    //     }
-    // },
+    methods: {
+        getProfile(){
+            this.$store.commit('startLoading')
+            axios.get(`${baseURL}/expert/profile/${this.userId}`)
+            .then((res)=>{
+                this.profiles = res.data.data
+                this.$store.commit('endLoading')
+            })
+            .catch((err)=>{
+                this.$store.dispatch('handleError', err)
+            })
+        }
+    },
     mounted(){
-        // if(Object.keys(this.profile).length == 0){
-            // this.getProfile()
-            console.log(this.profile)
-        // }
+        this.getProfile()
+        
     }
 }
 </script>
 
 <style scoped>
-.skillbox{
-    flex-wrap: wrap;
-    gap: 10px;
+th, td{
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #f2f4f7;
+}
+thead th:nth-child(1){
+    width: 50px;
+}
+thead th:nth-child(2){
+    min-width : 200px;
+}
+thead th:nth-child(3){
+    min-width: 200px;
+}
+thead th:nth-child(4){
+    min-width: 150px;
+}
+thead th:nth-child(15){
+    min-width: 100px
+}
+.tablecont::-webkit-scrollbar{
+    height: 0
 }
 @media only screen and (min-width: 1024px){
-    .imgcont{
-        width: 150px;
-        height: 150px;
-    }
-    .infobox{
-        max-width: 600px
-    }
+    
 }
 
 </style>

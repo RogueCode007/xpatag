@@ -77,8 +77,8 @@ export default {
           password : this.password
         }
         this.$store.commit('setNewUser', user)
-        this.$router.push('/signup/2')
-        this.$store.commit('increaseSignup', {val: 20})
+        this.$router.push('/signup/expert/step2')
+        this.$store.commit('increaseSignup', {val: 25})
       }
     }
   },
