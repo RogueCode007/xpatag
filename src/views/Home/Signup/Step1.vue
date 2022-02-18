@@ -16,7 +16,7 @@
       </div>
       <div class="mt-4">
         <div class="form__div mt-2 w-full rounded relative">
-          <input type="password" v-model="password" ref="password" class="form__input " placeholder=" " required>
+          <input type="password" v-model="password" ref="password" class="form__input tracking-widest" placeholder=" " required>
           <label class="text-sm text-gray-400 form__label">Password</label>
           <font-awesome-icon icon="eye" v-if="showEye" class="absolute cursor-pointer eye text-gray-500" @click="showPassword"/>
           <font-awesome-icon icon="eye-slash" v-else class="absolute cursor-pointer eye text-gray-500" @click="hidePassword"/>

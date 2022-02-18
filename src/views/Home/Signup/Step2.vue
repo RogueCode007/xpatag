@@ -26,8 +26,9 @@
       <p class="text-red-500 text-sm text-center" v-if="error.image">Please upload a valid image file</p>
       <div class="mt-4">
         <label class="text-sm text-gray-400">Phone number</label>
-        <input v-model="phone" type="text" class="mt-2 bg-white w-full py-2 px-3 rounded outline-none border focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent" required>
-        <p v-if="phone.length > 0 && error.phone" class="text-red-500 text-sm mt-2">Please enter a valid phone number</p>
+        <vue-tel-input v-model="phone" @country-changed="saveCountry" :autoFormat="false" :inputOptions="inputOptions" :validCharactersOnly="true"></vue-tel-input>
+        <!-- <input v-model="phone" type="text" class="mt-2 bg-white w-full py-2 px-3 rounded outline-none border focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent" required>-->
+        <!-- <p v-if="phone.length > 0 && error.phone" class="text-red-500 text-sm mt-2">Please enter a valid phone number</p>  -->
       </div>
       <div class="mt-4">
         <label class="text-sm text-gray-400">Address</label>
@@ -53,11 +54,15 @@
 </template>
 
 <script>
+import { VueTelInput } from 'vue-tel-input';
 import placeholder from "@/assets/img/Signup/person.png"
 import axios from "axios"
 import baseURL from "@/main"
 import {mapState} from 'vuex'
 export default {
+  components: {
+      VueTelInput,
+    },
   data(){
     return {
       phone: '',
@@ -65,6 +70,8 @@ export default {
       state_id: '',
       states: [],
       city: '',
+      inputOptions: { required: true },
+      dialCode : '',
       placeholder: placeholder,
       error: {
         phone: false,
@@ -78,13 +85,9 @@ export default {
     })
   },
   watch:{
-    phone(){
-      if(/^\d{11}$/.test(this.phone)){
-        this.error.phone = false;
-      }else{
-        this.error.phone = true;
-      }
-    },
+    // phone(){
+    //   console.log(this.phone)
+    // },
     state(){
       if(this.state.id){
         this.state_id = this.state.id
@@ -93,6 +96,9 @@ export default {
     },
   },
   methods:{
+    saveCountry(obj){
+      this.dialCode = obj.dialCode
+    },
     checkImage(){
       //check if a file has been uploaded and if the file up;oaded is an image file
       if(this.$refs.image.files[0] && (this.$refs.image.files[0].type == "image/png" || this.$refs.image.files[0].type == "image/jpeg")){
@@ -108,7 +114,7 @@ export default {
       }else{
         const obj = {
           image: this.placeholder,
-          phone : this.phone,
+          phone : `${this.dialCode}${this.phone}`,
           address: this.address,
           city: this.city,
           state_id : this.state_id,
@@ -155,7 +161,7 @@ export default {
 
 }
 </script>
-
+<style src="vue-tel-input/dist/vue-tel-input.css"></style>
 <style scoped>
 .green-circle{
   background-color: #52B95E;
@@ -177,7 +183,7 @@ export default {
   /* border: 1px solid red */
 }
 .link{
-  top: 50%;
-  transform: translateY(-50%);
+  top: -90%;
+  /* transform: translateY(-50%); */
 }
 </style>

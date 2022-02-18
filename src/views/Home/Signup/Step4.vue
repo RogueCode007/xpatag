@@ -99,8 +99,8 @@ export default {
 
 <style scoped>
 .link{
-  top: 50%;
-  transform: translateY(-50%);
+  top: -90%;
+  /* transform: translateY(-50%); */
 }∏
 .flex-cont{
   display: flex;
