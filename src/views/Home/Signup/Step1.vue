@@ -1,7 +1,7 @@
 <template>
   <div class="mt-6">
     <h1 class="fonts-bold text-2xl text-center">Create an account</h1>
-    <form @submit.prevent="validate" class="mt-4">
+    <form @submit.prevent="validateEmail" class="mt-4">
       <div class="form__div mt-2">
         <input v-model="firstname" type="text" class="form__input" placeholder=" " required>
         <label class="text-sm text-gray-400 form__label">First name</label>
@@ -25,14 +25,20 @@
       </div>
       <button class="mt-10 outline-none py-2 w-full lg:w-4/5 lg:block lg:mx-auto text-white focus:outline-none" style="background-color: #52B95E; border-radius: 22px">Continue</button>
     </form>
+    <Loading v-if="loading" />
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+import baseURL from '../../../main'
 import {mapState} from 'vuex'
+import Loading from "../../../components/BlankLoading.vue"
 export default {
+  components: {Loading},
   data(){
     return {
+      loading: false,
       showEye : true,
       firstname: '',
       lastname: '',
@@ -65,6 +71,18 @@ export default {
     hidePassword(){
       this.$refs.password.type = 'password'
       this.showEye = true
+    },
+    validateEmail(){
+      this.loading = true
+      axios({url: `${baseURL}/validate/email`, data: {email: this.email}, method: 'POST'})
+      .then(()=> {
+        this.loading = false
+        this.validate()
+      })
+      .catch((err)=>{
+        this.loading = false
+        this.$store.dispatch('handleError', err)
+      })
     },
     validate(){
        if(Object.values(this.error).includes(true)){

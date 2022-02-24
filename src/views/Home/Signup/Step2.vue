@@ -50,6 +50,7 @@
       </div>
       <button class="mt-10 outline-none py-2 w-full lg:w-4/5 lg:block lg:mx-auto text-white focus:outline-none" style="background-color: #52B95E; border-radius: 22px">Continue</button>
     </form>
+    <Loading v-if="loading" />
   </div>
 </template>
 
@@ -59,9 +60,10 @@ import placeholder from "@/assets/img/Signup/person.png"
 import axios from "axios"
 import baseURL from "@/main"
 import {mapState} from 'vuex'
+import Loading from "../../../components/BlankLoading.vue"
 export default {
   components: {
-      VueTelInput,
+      VueTelInput, Loading
     },
   data(){
     return {
@@ -76,7 +78,8 @@ export default {
       error: {
         phone: false,
         image: false
-      }
+      },
+      loading: false
     }
   },
   computed:{
@@ -103,10 +106,23 @@ export default {
       //check if a file has been uploaded and if the file up;oaded is an image file
       if(this.$refs.image.files[0] && (this.$refs.image.files[0].type == "image/png" || this.$refs.image.files[0].type == "image/jpeg")){
         this.error.image = false
-        this.validate()
+        this.validatePhone()
+        // this.validate()
       }else{
         this.error.image = true
       }
+    },
+    validatePhone(){
+      this.loading = true
+      axios({url: `${baseURL}/validate/phone`, data: {phone: this.phone}, method: 'POST'})
+      .then(()=> {
+        this.loading = false
+        this.validate()
+      })
+      .catch((err)=>{
+        this.loading = false
+        this.$store.dispatch('handleError', err)
+      })
     },
     validate(){
        if(Object.values(this.error).includes(true)){

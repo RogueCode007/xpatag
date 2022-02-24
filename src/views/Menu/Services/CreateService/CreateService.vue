@@ -23,31 +23,8 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
-import axios from 'axios'
-import baseURL from "@/main"
 export default {
-  computed:{
-    ...mapState({
-      categories : state => state.categories
-    })
-  },
-  methods:{
-    getCategories(){
-      axios.get(`${baseURL}/category`)
-      .then(res=>{
-        this.$store.commit('setCategories', res.data.data)
-      })
-      .catch(err=>{
-        this.$store.dispatch('handleError', err)
-      })
-    }
-  },
-  mounted(){
-    if(Object.keys(this.categories).length == 0){
-      this.getCategories()
-    }
-  }
+ 
 }
 </script>
 
