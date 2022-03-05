@@ -22,7 +22,7 @@
                <tr v-for="(profile, index) in profiles" :key="index">
                     <td class="text-gray-500 text-sm">{{index + 1}}</td> 
                     <td class="text-gray-500 text-sm">{{profile.category.name}}</td> 
-                    <td class="text-gray-500 text-sm">{{profile["sub-category"].name}}</td> 
+                    <td class="text-gray-500 text-sm">{{profile["sub_category"].name}}</td> 
                     <td class="text-gray-500 text-sm">{{profile.profession}}</td> 
                     <td class="">
                         <div class="flex gap-2 items-center">
@@ -68,6 +68,7 @@ export default {
             axios.get(`${baseURL}/expert/profile/${this.userId}`)
             .then((res)=>{
                 this.profiles = res.data.data
+                console.log(this.profiles)
                 this.$store.commit('endLoading')
             })
             .catch((err)=>{

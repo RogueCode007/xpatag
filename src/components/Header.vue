@@ -14,12 +14,12 @@
       </form> -->
       <div></div>
       <div class="hidden lg:flex lg:items-center lg:gap-5">
-        <div class="relative">
+        <!-- <div class="relative">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M13.8742 21.7498C13.6838 22.0782 13.4104 22.3507 13.0815 22.5402C12.7526 22.7296 12.3797 22.8293 12.0001 22.8293C11.6205 22.8293 11.2476 22.7296 10.9187 22.5402C10.5898 22.3507 10.3164 22.0782 10.1259 21.7498M22.8334 17.4165H1.16675C2.0287 17.4165 2.85535 17.0741 3.46484 16.4646C4.07434 15.8551 4.41675 15.0285 4.41675 14.1665V8.74984C4.41675 6.73861 5.2157 4.80976 6.63785 3.38761C8.06001 1.96546 9.98886 1.1665 12.0001 1.1665C14.0113 1.1665 15.9402 1.96546 17.3623 3.38761C18.7845 4.80976 19.5834 6.73861 19.5834 8.74984V14.1665C19.5834 15.0285 19.9258 15.8551 20.5353 16.4646C21.1448 17.0741 21.9715 17.4165 22.8334 17.4165Z" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           <div class="dot absolute" style="background-color: #F80000"></div>
-        </div> 
+        </div>  -->
         <div class="flex items-start">
           <div class="imgcont relative">
             <object :data="image" type="image/png">

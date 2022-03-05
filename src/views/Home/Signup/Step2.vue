@@ -135,7 +135,6 @@ export default {
           city: this.city,
           state_id : this.state_id,
         }
-        // console.log(obj)
         this.$store.commit('setNewUser', obj)
         this.$router.push('/signup/expert/step3')
         this.$store.commit('increaseSignup', {val: 50})

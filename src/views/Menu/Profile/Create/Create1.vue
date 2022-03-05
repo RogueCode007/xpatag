@@ -46,7 +46,7 @@ export default {
             profession: '',
             sub_category_id: '',
             working_days: [],
-            options: [{text: 'Mon', val: 1},{text: 'Tue', val:2},{text:'Wed', val:3}, {text:'Thu', val:4,},{text:'Fri', val:5}, {text:'Sat', val:6},{text:'Sun', val:7}],
+            options: [{text: 'Monday', val: 1},{text: 'Tuesday', val:2},{text:'Wednesday', val:3}, {text:'Thursday', val:4,},{text:'Friday', val:5}, {text:'Saturday', val:6},{text:'Sunday', val:7}],
             error: {
                 experience: false,
                 availability: false

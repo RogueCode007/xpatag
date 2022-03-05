@@ -11,10 +11,6 @@ import { faFacebookSquare, faInstagram, faTwitter, faLinkedin} from '@fortawesom
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import VueTailwind from 'vue-tailwind'
 import TPagination from 'vue-tailwind/dist/t-pagination'
-import VueTelInput from 'vue-tel-input';
-import 'vue-tel-input/dist/vue-tel-input.css';
-
-Vue.use(VueTelInput);
 const settings = {
   't-pagination': {
     component: TPagination,
